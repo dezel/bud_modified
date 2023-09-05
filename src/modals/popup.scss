@@ -1,0 +1,20 @@
+
+.MuiDialog-paper{
+    width: 650px;
+    padding: 16px;
+    position: absolute;
+    top: -70px;
+
+    .dialog-title{
+        
+        padding: 5px 0px;
+
+        .action-button{
+            min-width: 0;
+            margin: 3   px;
+            color:#f83245;
+            background-color: #f8324526;
+        }
+    }
+
+}

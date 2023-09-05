@@ -1,0 +1,66 @@
+.userdatatable{
+    height: 600px;
+    padding: 20px;
+
+    .userdatatableTitle{
+        width: 100%;
+        font-size: 24px;
+        color: grey;
+        margin-bottom:10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .link{
+            text-decoration: none;
+            font-size:16px;
+            color: #fff;
+            font-weight: 400;
+            border: 1px solid green;
+            background-color: rgba(0, 128, 0, 0.726);
+            padding: 5px;
+            border-radius: 5px;
+            &:hover{
+                color: green;
+                background-color: white;
+                border: 1px solid green
+            }
+        }
+    }
+    .userImgContainer{
+        display: flex;
+        align-items: center;
+
+        .userImg{
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit:fill;
+            margin-right: 20px;
+        }
+    }
+
+    .actionContainer{
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .editButton{
+        padding: 2px 5px;
+        border-radius: 5px;
+        color: darkblue;
+        border: 1px dotted rgba(0, 0, 139, 0.548);
+        cursor: pointer;
+    }
+
+    .deleteButton{
+        padding: 2px 5px;
+        border-radius: 5px;
+        color: crimson;
+        border: 1px dotted rgba(220, 20, 60, 0.6);
+        cursor: pointer;
+    }
+
+
+}

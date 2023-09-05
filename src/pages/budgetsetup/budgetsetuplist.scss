@@ -1,0 +1,73 @@
+.budgetsetuplist{
+    display: flex;
+    width: 100%;
+    
+    .budgetsetuplistContainer{
+        flex:6;
+        
+        .innerContainer{
+            background: #f4f5fd;
+            height: 100%;
+
+
+            .budgetsetuplistpaper{
+                margin: 20px;
+                padding:30px;
+                background: #fff;
+                box-shadow: 2px 4px 10px 2px rgba(201,201,201,0.18);
+                -webkit-box-shadow: 2px 4px 10px 2px rgba(201,201,201,0.18);
+                -moz-box-shadow: 2px 4px 10px 2px rgba(201,201,201,0.18);
+                border-radius: 2px;
+                // width: 90%;
+                // height: 100px;
+
+                .form-wrapper{
+                    width:100%;
+                    display: flex;
+                    // flex-wrap: wrap;
+                    box-sizing: border-box;
+
+
+                    // For Form
+                    .MuiTextField-root, .MuiFormControl-root{
+                       margin : 15px 45px;
+                       display: flex;
+                       flex-direction: column;
+                       width: 450px;
+
+                    }
+                    .button-group{
+                     margin-left: 45px;
+
+                     .button{
+                        margin-right: 5px;
+                     }
+                    }
+                    
+                }
+
+                // TABLE SEARCH INPUT
+                .search-budgetsetup{
+                    width: 80%;
+                    margin-left: -20px;
+                    margin-bottom: 5px;
+                }
+                .add-button{
+                    position:absolute;
+                    right: 120px;
+                    // background-color: green;
+                    // color: white;
+                }
+                .upload-button{
+                    position:absolute;
+                    right: 10px;
+                    // background-color: green;
+                    // color: white;
+                }
+            }
+        }
+    }
+     
+    
+
+}
