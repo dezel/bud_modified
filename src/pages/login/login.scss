@@ -1,7 +1,7 @@
 .container{
     width: 100vw;
     height: 100vh;
-    background-color: #eee7e7;
+    background-color: white;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -48,7 +48,7 @@
                 border: none;
                 padding: 12px 20px;
                 color: white;
-                background-color: teal;
+                background-color: rgb(1, 166, 166);
                 cursor: pointer;
                 
                 &:hover{
