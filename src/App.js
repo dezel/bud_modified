@@ -14,18 +14,54 @@ import NotFound from "./pages/notfound/NotFound";
 // import { setUserFromLocalStorage } from "./redux/calls/usersApiCalls";
 import "./style/dark.scss";
 import { tryParse } from "./utils/tryParse";
+import axios from "axios";
+import { getType } from "@reduxjs/toolkit";
+import Welcome from "./pages/login/Welcome";
+import ProtectedRoutes from "./utils/ProtectedRoute";
 
 function App() {
-  const [user,setUser]=useState(null)
-  // const [loginUser,setLoginUser]=useState(null)
-  // const user = null
-  const userInfo = tryParse(localStorage.getItem('userData'))
-  console.log(userInfo)
+  // let userInfo
 
-  const handleUserInfo = (data)=>{
-    setUser(data)
-  }
-  console.log(user)
+  // const [user,setUser]=useState(null)
+  // const [cred,setCred] = useState(null)
+ 
+  
+
+  // const handleUserInfo = (data)=>{
+  //   setUser(data)
+  // }
+
+
+  // useEffect(()=>{
+  //    userInfo= tryParse(localStorage.getItem('userData'))
+  //     if(userInfo){
+  //       handleUserInfo(userInfo)
+  //     }
+  //   },[userInfo])
+
+  // console.log('Credentials',cred)
+
+  // const [entity, setEntity] = useState([])
+  // const header = {
+  //   headers: {
+  //     'Authorization': 'Token bda3016ad3fb7516abb9665f0ab2db1f9f7f65eb',
+  //     'Accept': 'application/json',
+  //     'Content-Type': 'application/json'
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   console.log(userInfo)
+  //   axios.get('http://localhost:8000/get_entity/'+userInfo.user.person.entity,
+  //     header
+  //   )
+  //     .then(
+  //       response => {
+  //         setEntity(response.data)
+  //       })
+  // }, [])
+
+  // console.log(entity)
 
   // const dispatch = useDispatch();
   // parse or null
@@ -51,19 +87,22 @@ function App() {
   // const user = useSelector((state) => state.user.currentUser);
   // console.log(user);
 
-  if (!userInfo) {
-    return <Login />;
-  }
+  // if (!user) {
+  //   return <Login />;
+  // }
   return (
     <div>
       <Router>
         <Routes>
+          <Route path="/login" element={<Login/>} />
           {/* Protected Route */}
-          {/* <Route element={<RequireAuth />}> */}
+          {/* <Route element={<ProtectedRoutes />}> */}
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/users" element={<UserList />} />
           <Route path="users/:id" element={<Single />} />
+          
+
 
           {/* <Route
             path="/users/new"

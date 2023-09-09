@@ -14,14 +14,21 @@ import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import Welcome from "../../pages/login/Welcome";
+import { useNavigate } from "react-router-dom";
+
+
 
 const Sidebar = () => {
-  const handleLogout =(e)=>{
+  const navigate = useNavigate()
+  const handleLogout = (e) => {
     e.preventDefault();
     localStorage.removeItem('userData')
+    navigate('/login')
+
   }
 
-  
+
   return (
     <div className="sidebar">
       <div className="top">

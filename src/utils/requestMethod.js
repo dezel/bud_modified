@@ -5,10 +5,10 @@ const BASE_URL = "http://localhost:8000";
 
 let TOKEN;
 
-const user = tryParse(localStorage.getItem("currentUser"));
+const user = tryParse(localStorage.getItem("userData"));
 try {
-  if (user.id) {
-    TOKEN = user.accessToken;
+  if (user.token) {
+    TOKEN = user.token;
   }
 } catch (err) {
   localStorage.setItem("currentUser", "{}");
@@ -20,5 +20,5 @@ export const publicRequest = axios.create({
 
 export const userRequest = axios.create({
   baseURL: BASE_URL,
-  headers: { token: `Bearer ${TOKEN}` },
+  headers: { token: `${TOKEN}` },
 });

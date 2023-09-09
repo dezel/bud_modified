@@ -31,7 +31,6 @@ export default function UsersModal({ open, openModal, closeModal }) {
             Text in a modal
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
           </Typography> */}
         </Box>
       </Modal>

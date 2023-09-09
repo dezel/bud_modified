@@ -1,6 +1,7 @@
 export const initialFValues = {
   id: 0,
-  fullname: "",
+  first_name: "",
+  last_name:"",
   username: "",
   password: "",
   userType: "",
@@ -14,10 +15,19 @@ export const gender = [
   { id: "female", title: "Female" },
 ];
 
+export const entity = [
+  { id: "male", title: "Marbon Pharmacy" },
+  { id: "female", title: "Narut Pharmacy" },
+];
+
+export const sub_entity = [
+  {id:1, title: "Circle"},
+  {id:2, title:"Agbogbloshie"}
+]
 //User Type
 export const userType = [
   { id: 17, title: "Admin" },
-  { id: 18, title: "Procurement" },
+  { id: 18, title: "Standard" },
 ];
 
 export const branchType = [

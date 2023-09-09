@@ -34,6 +34,7 @@ import {
 } from "@mui/icons-material";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
+import { publicRequest } from "../../utils/requestMethod";
 
 // // IMPORT INITIAL FORM VALUE
 // import { initialFValues } from "../../components/component-utils/initValues";
@@ -86,185 +87,209 @@ const UserList = () => {
     },
   });
 
-  // POP UP MODAL
-  const [openPopup, setOpenPopup] = useState(false);
+  // GET USERS DATA FOR EZEKIEL
 
-  // SET RECORDS FOR EDIT
-  const [recordForEdit, setRecordForEdit] = useState(null);
+  let queryData = {
+    transaction_date: "2023-08-24",
+    person: {
+      entity: 1,
+      sub_entity: 1
+    }
+  }
 
-  // NOTIFICATION
-  const [notify, setNotify] = useState({
-    isOpen: false,
-    message: "",
-    type: "",
+const getUsersDataForEzekiel = async () => {
+  const res = await publicRequest.post('/get_receipts',queryData)
+  console.log('Response',res)
+  return res.data
+
+}
+
+useEffect(()=>{
+  const data = getUsersDataForEzekiel()
+  setUsersData(data)
+
+},[])
+
+// POP UP MODAL
+const [openPopup, setOpenPopup] = useState(false);
+
+// SET RECORDS FOR EDIT
+const [recordForEdit, setRecordForEdit] = useState(null);
+
+// NOTIFICATION
+const [notify, setNotify] = useState({
+  isOpen: false,
+  message: "",
+  type: "",
+});
+
+const dispatch = useDispatch();
+useEffect(() => {
+  try {
+    getAllUsers(dispatch);
+  } catch (err) {
+    console.log(err);
+  }
+}, [dispatch]);
+
+// const users = useSelector((state) => state.user.allusers);
+const users =[]
+
+// SET USERS DATA
+useEffect(() => {
+  if (users) {
+    setUsersData(users);
+  }
+}, [users]);
+
+// console.log(usersData);
+
+// TABLE DATA
+const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
+  useTable(usersData, filterFn);
+
+const handleSearch = (e) => {
+  let target = e.target;
+  setFilterFn({
+    fn: (items) => {
+      if (target.value === "") return items;
+      else
+        return items.filter((x) =>
+          x.fullname.toLowerCase().includes(target.value)
+        );
+    },
   });
+};
 
-  const dispatch = useDispatch();
-  useEffect(() => {
-    try {
-      getAllUsers(dispatch);
-    } catch (err) {
-      console.log(err);
-    }
-  }, [dispatch]);
+// SET OPEN IN POPUP I.E RECORDS FOR EDIT
+const openInPopup = (item) => {
+  setRecordForEdit(item);
+  setOpenPopup(true);
+  // console.log(recordForEdit);
+};
 
-  const users = useSelector((state) => state.user.allusers);
-
-  // SET USERS DATA
-  useEffect(() => {
-    if (users) {
-      setUsersData(users);
-    }
-  }, [users]);
-
-  // console.log(usersData);
-
-  // TABLE DATA
-  const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
-    useTable(usersData, filterFn);
-
-  const handleSearch = (e) => {
-    let target = e.target;
-    setFilterFn({
-      fn: (items) => {
-        if (target.value === "") return items;
-        else
-          return items.filter((x) =>
-            x.fullname.toLowerCase().includes(target.value)
-          );
-      },
+// ADD OR EDITING USERS
+const addOrEdit = (user, resetForm) => {
+  if (user.id === 0) {
+    createNewUser(dispatch, user);
+    resetForm();
+    setOpenPopup(false);
+    setNotify({
+      isOpen: true,
+      message: "Submitted Successfully",
+      type: "success",
     });
-  };
+  } else {
+    updateUser(dispatch, user.id, user);
+    resetForm();
+    setOpenPopup(false);
+    setNotify({
+      isOpen: true,
+      message: "Submitted Successfully",
+      type: "success",
+    });
+  }
 
-  // SET OPEN IN POPUP I.E RECORDS FOR EDIT
-  const openInPopup = (item) => {
-    setRecordForEdit(item);
-    setOpenPopup(true);
-    // console.log(recordForEdit);
-  };
+  // if user_id = 0 then perform insert
+  // else perform update operation
+  // ADD DATA INTO DB
+  // code ...
+};
 
-  // ADD OR EDITING USERS
-  const addOrEdit = (user, resetForm) => {
-    if (user.id === 0) {
-      createNewUser(dispatch, user);
-      resetForm();
-      setOpenPopup(false);
-      setNotify({
-        isOpen: true,
-        message: "Submitted Successfully",
-        type: "success",
-      });
-    } else {
-      updateUser(dispatch, user.id, user);
-      resetForm();
-      setOpenPopup(false);
-      setNotify({
-        isOpen: true,
-        message: "Submitted Successfully",
-        type: "success",
-      });
-    }
+// REMOVE USER
+const handleRemove = (user) => {
+  if (window.confirm("Are you sure you want to delete? You can't undo.")) {
+    const { id } = user;
+    deleteUser(dispatch, id);
+    setNotify({
+      isOpen: true,
+      message: "Deleted Successfully",
+      type: "success",
+    });
+  }
+};
 
-    // if user_id = 0 then perform insert
-    // else perform update operation
-    // ADD DATA INTO DB
-    // code ...
-  };
-
-  // REMOVE USER
-  const handleRemove = (user) => {
-    if (window.confirm("Are you sure you want to delete? You can't undo.")) {
-      const { id } = user;
-      deleteUser(dispatch, id);
-      setNotify({
-        isOpen: true,
-        message: "Deleted Successfully",
-        type: "success",
-      });
-    }
-  };
-
-  return (
-    <div className="userlist">
-      <Sidebar />
-      <div className="userlistContainer">
-        <Navbar />
-        <div className="innerContainer">
-          <PageHeader
-            icon={<PeopleOutlineTwoTone className="headerIcon" />}
-            mainTitle="Users"
-            subTitle="Users Information"
-          />
-          <div className="userlistpaper">
-            <Toolbar>
-              <Controls.Input
-                className="search-users"
-                label="Search Users"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Search />
-                    </InputAdornment>
-                  ),
-                }}
-                onChange={handleSearch}
-              />
-              <Controls.Button
-                text="Add New"
-                variant="outlined"
-                startIcon={<AddIcon />}
-                size="small"
-                className="add-button"
-                onClick={() => {
-                  setOpenPopup(true);
-                  setRecordForEdit(null);
-                }}
-              />
-            </Toolbar>
-            <TblContainer>
-              <TblHead headCells={headCells} />
-              <TableBody>
-                {recordsAfterPagingAndSorting().map((user) => (
-                  <StyledTableRow key={user.id}>
-                    <StyledTableCell>{user.fullname}</StyledTableCell>
-                    <StyledTableCell>{user.username}</StyledTableCell>
-                    <StyledTableCell>{user.gender}</StyledTableCell>
-                    <StyledTableCell>{user.staff_id}</StyledTableCell>
-                    <StyledTableCell>{user.user_status}</StyledTableCell>
-                    <StyledTableCell>
-                      <Controls.ActionButton
-                        style={btnPrimary}
-                        onClick={() => {
-                          openInPopup(user);
-                        }}
-                      >
-                        <EditOutlined fontSize="small" />
-                      </Controls.ActionButton>
-                      <Controls.ActionButton
-                        style={btnSecondary}
-                        onClick={() => handleRemove(user)}
-                      >
-                        <CloseIcon fontSize="small" />
-                      </Controls.ActionButton>
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
-              </TableBody>
-            </TblContainer>
-            <TblPagination />
-          </div>
-          <Popup
-            title="Users Form"
-            openPopup={openPopup}
-            setOpenPopup={setOpenPopup}
-          >
-            <UsersForm addOrEdit={addOrEdit} recordForEdit={recordForEdit} />
-          </Popup>
-          <Notification notify={notify} setNotify={setNotify} />
+return (
+  <div className="userlist">
+    <Sidebar />
+    <div className="userlistContainer">
+      <Navbar />
+      <div className="innerContainer">
+        <PageHeader
+          icon={<PeopleOutlineTwoTone className="headerIcon" />}
+          mainTitle="Users"
+          subTitle="Users Information"
+        />
+        <div className="userlistpaper">
+          <Toolbar>
+            <Controls.Input
+              className="search-users"
+              label="Search Users"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Search />
+                  </InputAdornment>
+                ),
+              }}
+              onChange={handleSearch}
+            />
+            <Controls.Button
+              text="Add New"
+              variant="outlined"
+              startIcon={<AddIcon />}
+              size="small"
+              className="add-button"
+              onClick={() => {
+                setOpenPopup(true);
+                setRecordForEdit(null);
+              }}
+            />
+          </Toolbar>
+          <TblContainer>
+            <TblHead headCells={headCells} />
+            <TableBody>
+              {recordsAfterPagingAndSorting().map((user) => (
+                <StyledTableRow key={user.id}>
+                  <StyledTableCell>{user.fullname}</StyledTableCell>
+                  <StyledTableCell>{user.username}</StyledTableCell>
+                  <StyledTableCell>{user.gender}</StyledTableCell>
+                  <StyledTableCell>{user.staff_id}</StyledTableCell>
+                  <StyledTableCell>{user.user_status}</StyledTableCell>
+                  <StyledTableCell>
+                    <Controls.ActionButton
+                      style={btnPrimary}
+                      onClick={() => {
+                        openInPopup(user);
+                      }}
+                    >
+                      <EditOutlined fontSize="small" />
+                    </Controls.ActionButton>
+                    <Controls.ActionButton
+                      style={btnSecondary}
+                      onClick={() => handleRemove(user)}
+                    >
+                      <CloseIcon fontSize="small" />
+                    </Controls.ActionButton>
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </TblContainer>
+          <TblPagination />
         </div>
+        <Popup
+          title="Users Form"
+          openPopup={openPopup}
+          setOpenPopup={setOpenPopup}
+        >
+          <UsersForm addOrEdit={addOrEdit} recordForEdit={recordForEdit} />
+        </Popup>
+        <Notification notify={notify} setNotify={setNotify} />
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default UserList;

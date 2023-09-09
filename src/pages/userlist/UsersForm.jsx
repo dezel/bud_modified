@@ -7,6 +7,8 @@ import {
   initialFValues,
   gender,
   userType,
+  entity,
+  sub_entity
 } from "../../components/component-utils/initValues";
 
 const UsersForm = ({ addOrEdit, recordForEdit }) => {
@@ -44,12 +46,13 @@ const UsersForm = ({ addOrEdit, recordForEdit }) => {
 
   useEffect(() => {
     if (recordForEdit !== null) {
-      const { id, fullname, username, staff_id, user_type_id, gender } =
+      const { id, first_name, last_name, username, staff_id, user_type_id, gender } =
         recordForEdit;
 
       const record = {
         id: id,
-        fullname,
+        first_name,
+        last_name,
         username,
         password: "",
         staffId: staff_id,
@@ -65,9 +68,17 @@ const UsersForm = ({ addOrEdit, recordForEdit }) => {
       <div className="form-wrapper">
         <Grid item xs={6}>
           <Controls.Input
-            name="fullname"
-            label="Full Name"
-            value={values.fullname}
+            name="first_name"
+            label="First Name"
+            value={values.first_name}
+            onChange={handleInputChange}
+            error={errors.fullname}
+            size="small"
+          />
+          <Controls.Input
+            name="last_name"
+            label="Last Name"
+            value={values.last_name}
             onChange={handleInputChange}
             error={errors.fullname}
             size="small"
@@ -113,6 +124,22 @@ const UsersForm = ({ addOrEdit, recordForEdit }) => {
             value={values.gender}
             onChange={handleInputChange}
             options={gender}
+            size="small"
+          />
+          <Controls.Select
+            name="Company"
+            label="Company"
+            value={values.entity}
+            onChange={handleInputChange}
+            options={entity}
+            size="small"
+          />
+          <Controls.Select
+            name="Branch"
+            label="Branch"
+            value={values.sub_entity}
+            onChange={handleInputChange}
+            options={sub_entity}
             size="small"
           />
           <div className="button-group">

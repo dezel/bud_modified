@@ -1,4 +1,5 @@
 import "./navbar.scss";
+import {useState,useEffect} from 'react'
 import SearchIcon from "@mui/icons-material/Search";
 import LanguageIcon from "@mui/icons-material/Language";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
@@ -6,8 +7,9 @@ import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import ListIcon from "@mui/icons-material/List";
-
+import Welcome from "../../pages/login/Welcome";
 const Navbar = () => {
+
   return (
     <div className="navbar">
       <div className="wrapper">
@@ -45,6 +47,9 @@ const Navbar = () => {
             />
           </div>
         </div> */}
+        <div className="item">
+          <Welcome/>
+        </div>
       </div>
     </div>
   );
