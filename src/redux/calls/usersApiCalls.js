@@ -45,14 +45,14 @@ export const logout = async (dispatch) => {
 export const getAllUsers = async (dispatch) => {
   dispatch(getUsersStart());
 
-  try {
-    const res = await userRequest.get("/users/allusers");
-    dispatch(getUsersSuccess(res.data.recordset));
-    // console.log(res.data);
-  } catch (err) {
-    dispatch(getUsersFailure());
-    console.log(err);
-  }
+  // try {
+  //   const res = await userRequest.get("/users/allusers");
+  //   dispatch(getUsersSuccess(res.data.recordset));
+  //   // console.log(res.data);
+  // } catch (err) {
+  //   dispatch(getUsersFailure());
+  //   console.log(err);
+  // }
 };
 
 export const removeUser = async (dispatch) => {

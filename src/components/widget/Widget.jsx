@@ -5,11 +5,11 @@ import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import ShoppingCartCheckoutOutlinedIcon from "@mui/icons-material/ShoppingCartCheckoutOutlined";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
 
-const Widget = ({ type }) => {
+const Widget = ({ type, amount }) => {
   let data;
 
   // Temporary
-  const amount = 100;
+  // const amount = 100;
   const diff = 20;
 
   switch (type) {

@@ -1,147 +1,164 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./usersform.scss";
 import { Grid } from "@mui/material";
 import { useForm, Form } from "../../components/useForm";
 import Controls from "./../../components/controls/Controls";
-import {
-  initialFValues,
-  gender,
-  userType,
-  entity,
-  sub_entity
-} from "../../components/component-utils/initValues";
+import companyData from "./companyData";
+// import { AsyncSelect } from 'react-select/async';
+import AsyncSelect, { useAsync } from 'react-select';
+import axios from 'axios';
+import Select from 'react-select'
+import { publicRequest, userRequest } from "../../utils/requestMethod";
 
-const UsersForm = ({ addOrEdit, recordForEdit }) => {
-  // VALIDATION
-  const validate = (fieldValues = values) => {
-    let temp = { ...errors };
+const UsersForm = () => {
+  const [selectedOption, setSelectedOption] = useState(null);
+  let options = [
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' }
+  ]
 
-    if ("fullname" in fieldValues)
-      temp.fullname = fieldValues.fullname ? "" : "This field is required.";
-    if ("username" in fieldValues)
-      temp.username = fieldValues.username ? "" : "This field is required.";
-    if ("staffId" in fieldValues)
-      temp.staffId = fieldValues.staffId ? "" : "This field is required.";
-    if ("userType" in fieldValues)
-      temp.userType =
-        fieldValues.userType.length !== 0 ? "" : "This field is required.";
 
-    setErrors({ ...temp });
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [companyOptions, setCompanyOptions] = useState({})
 
-    if (fieldValues === values)
-      return Object.values(temp).every((x) => x === "");
+
+  const getCompanyData = () => {
+    return userRequest.get('/get_entities').then(res => (setCompanyOptions(res.data)))
+  }
+
+  useEffect(() => {
+    getCompanyData()
+  }, [])
+
+  const [entity, setEntity] = useState()
+  
+  const loadOptions = (inputValue) => {
+    // make a GET request to the API endpoint with input value as parameter
+    return axios.get('http://localhost:8000/get_entities')
+      .then(response => {
+        console.log(response.data)
+        const data = response.data;
+        setEntity(data)
+        // map the data array to an array of objects with value and label keys
+        // react-select needs these keys to understand the options
+        const options = data.map(post => {
+          return {
+            value: post.id,
+            label: post.title
+          };
+        });
+        // return the options array
+        return options;
+      })
+      .catch(error => {
+        // handle the error
+        // get the message from the error object
+        const message = error.message;
+        // display an error message or do something else
+        console.error(message);
+      });
   };
-  // IMPORTING USEFORM CUSTOM COMPONENT
-  const { values, handleInputChange, errors, setErrors, setValues, resetForm } =
-    useForm(initialFValues, true, validate);
+
+
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (validate()) {
-      // Adding or Editing
-      addOrEdit(values, resetForm);
-    }
-    // console.log(validate());
+ 
+    const postData = {
+      first_name: firstName,
+      last_name: lastName,
+      password: password,
+      username: username,
+      person: {
+        entity: 1,
+        sub_entity: 1
+      }
+    }  
+    userRequest.post('/signup', postData)
+
+    .then((res) => console.log(res.data))
+    .then()
+    .catch((err)=>console.log(err.messages))
+    console.log(postData)
   };
 
-  useEffect(() => {
-    if (recordForEdit !== null) {
-      const { id, first_name, last_name, username, staff_id, user_type_id, gender } =
-        recordForEdit;
-
-      const record = {
-        id: id,
-        first_name,
-        last_name,
-        username,
-        password: "",
-        staffId: staff_id,
-        userType: user_type_id,
-        gender,
-      };
-      setValues(record);
-    }
-  }, [recordForEdit, setValues]);
 
   return (
     <Form onSubmit={handleSubmit}>
       <div className="form-wrapper">
         <Grid item xs={6}>
           <Controls.Input
-            name="first_name"
+            name="firstName"
             label="First Name"
-            value={values.first_name}
-            onChange={handleInputChange}
-            error={errors.fullname}
+            onChange={(e) => setFirstName(e.target.value)}
             size="small"
           />
           <Controls.Input
-            name="last_name"
+            name="lastName"
             label="Last Name"
-            value={values.last_name}
-            onChange={handleInputChange}
-            error={errors.fullname}
+            onChange={(e) => setLastName(e.target.value)}
             size="small"
           />
           <Controls.Input
             name="username"
             label="Username"
-            value={values.username}
-            onChange={handleInputChange}
-            error={errors.username}
-            size="small"
-          />
-          <Controls.Input
-            name="staffId"
-            label="Staff ID"
-            value={values.staffId}
-            onChange={handleInputChange}
-            error={errors.staffId}
+            onChange={(e) => setUsername(e.target.value)}
             size="small"
           />
           <Controls.Input
             name="password"
             label="Password"
-            value={values.password}
             type="password"
-            onChange={handleInputChange}
             size="small"
+            onChange={(e) => setPassword(e.target.value)}
           />
+          <Controls.Input
+            name="confirmPassword"
+            label="Confirm Password"
+            type="password"
+            size="small"
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+          <div className="form-wrapper">
+
+          </div>
+
+          {/* <Select
+            size="small"
+
+            options={companyOptions}
+          /> */}
         </Grid>
+        {/* <Grid item xs={6}>
+          <AsyncSelect // async select component
+            name="subEntity"
+            cacheOptions // enable caching of loaded options
+            defaultOptions // enable loading of default options on initial render
+            loadOptions={loadOptions} // function to load options from API
+            onChange={setSelectedOption} // function to update selected option state
+            onClick={loadOptions}
+            value={selectedOption} // value of selected option state
+            size="small"
+          />
+          <AsyncSelect // async select component
+            name="entity"
+            cacheOptions // enable caching of loaded options
+            defaultOptions // enable loading of default options on initial render
+            loadOptions={loadOptions} // function to load options from API
+            onChange={setSelectedOption} // function to update selected option state
+            onClick={loadOptions}
+            value={selectedOption} // value of selected option state
+            size="small"
+          />
+        </Grid>*/}
         <Grid item xs={6}>
-          <Controls.Select
-            name="userType"
-            label="User Type"
-            value={values.userType}
-            onChange={handleInputChange}
-            options={userType}
-            error={errors.userType}
-            size="small"
-          />
-          <Controls.Select
-            name="gender"
-            label="Gender"
-            value={values.gender}
-            onChange={handleInputChange}
-            options={gender}
-            size="small"
-          />
-          <Controls.Select
-            name="Company"
-            label="Company"
-            value={values.entity}
-            onChange={handleInputChange}
-            options={entity}
-            size="small"
-          />
-          <Controls.Select
-            name="Branch"
-            label="Branch"
-            value={values.sub_entity}
-            onChange={handleInputChange}
-            options={sub_entity}
-            size="small"
-          />
+
           <div className="button-group">
             <Controls.Button
               className="button"
@@ -149,15 +166,8 @@ const UsersForm = ({ addOrEdit, recordForEdit }) => {
               text="Submit"
               size="small"
             />
-            <Controls.Button
-              className="button"
-              text="reset"
-              color="secondary"
-              onClick={resetForm}
-              size="small"
-            />
           </div>
-        </Grid>
+        </Grid> 
       </div>
     </Form>
   );

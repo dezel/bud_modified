@@ -18,7 +18,8 @@ import axios from "axios";
 import { getType } from "@reduxjs/toolkit";
 import Welcome from "./pages/login/Welcome";
 import ProtectedRoutes from "./utils/ProtectedRoute";
-
+import TransactionList from "./transactions/TransactionList";
+import Profile from "./profile/Profile";
 function App() {
   // let userInfo
 
@@ -100,27 +101,10 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/users" element={<UserList />} />
-          <Route path="users/:id" element={<Single />} />
-          
 
-
-          {/* <Route
-            path="/users/new"
-            element={<New inputs={userInputs} title="Add New User" />}
-          /> */}
-
-          <Route path="/branchdept" element={<BranchList />} />
-          <Route path="/accountsetup" element={<AccountSetupList />} />
-          <Route path="/budgetsetup" element={<BudgetSetupList />} />
-          {/* <Route path="/products/:id" element={<Single />} />
-          <Route
-            path="/products/new"
-            element={<New inputs={productInputs} title="Add New Product" />}
-          /> */}
-          {/* </Route> */}
-          {/* Public Route
-          <Route exact path="/login" element={<Login />} /> */}
-
+          <Route path="/transactions" element={<TransactionList />} />
+          <Route path="/profile" element={<Profile />} />
+        
           {/* Catch */}
           <Route path="*" element={<NotFound />} />
         </Routes>

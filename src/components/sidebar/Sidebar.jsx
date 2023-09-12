@@ -53,6 +53,18 @@ const Sidebar = () => {
               <span className="dashboard">Users</span>
             </li>
           </Link>
+          <Link to="/transactions" style={{ textDecoration: "none" }}>
+            <li>
+              <HomeWorkIcon className="icon" />
+              <span className="dashboard">Transactions</span>
+            </li>
+          </Link>
+          <Link to="/funeralDonation" style={{ textDecoration: "none" }}>
+            <li>
+              <HomeWorkIcon className="icon" />
+              <span className="dashboard">Funeral</span>
+            </li>
+          </Link>
           {/* <Link to="/branchdept" style={{ textDecoration: "none" }}>
             <li>
               <HomeWorkIcon className="icon" />
@@ -75,11 +87,11 @@ const Sidebar = () => {
             <LocalShippingIcon className="icon" />
             <span className="dashboard">Delivery</span>
           </li> */}
-          <p className="title">USEFUL </p>
-          <li>
+          <p className="title"> </p>
+          {/* <li>
             <InsertChartIcon className="icon" />
             <span className="dashboard">Stats</span>
-          </li>
+          </li> */}
           {/* <li>
             <NotificationsNoneIcon className="icon" />
             <span className="dashboard">Notification</span>
@@ -89,19 +101,23 @@ const Sidebar = () => {
             <SettingsSystemDaydreamIcon className="icon" />
             <span className="dashboard">System Heath</span>
           </li> */}
-          <li>
+          {/* <li>
             <PsychologyIcon className="icon" />
             <span className="dashboard">Logs</span>
-          </li>
+          </li> */}
           <li>
             <SettingsApplicationsIcon className="icon" />
-            <span className="dashboard">Settings</span>
+            <span className="dashboard">Setup</span>
           </li>
-          <p className="title">USER </p>
-          <li>
-            <AccountCircleIcon className="icon" />
-            <span className="dashboard">Profile</span>
-          </li>
+          <p className="title">USER</p>
+          <Link to="/profile" style={{ textDecoration: "none" }}>
+            <li>
+              <AccountCircleIcon className="icon" />
+              <span className="dashboard">Profile</span>
+            </li>
+          </Link>
+
+
           <li onClick={handleLogout}>
             <ExitToAppIcon className="icon" />
             <span className="dashboard" >Logout</span>

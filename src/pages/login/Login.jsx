@@ -14,7 +14,7 @@ const Login = ({ setLoginInfo }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-
+  localStorage.removeItem('userData')
   const user = tryParse(localStorage.getItem('userData'))
   const navigate = useNavigate();
   // const location = useLocation();
@@ -26,7 +26,7 @@ const Login = ({ setLoginInfo }) => {
     e.preventDefault();
     try {
       const res = await publicRequest.post("/login", { username, password });
-      console.log(res.data)
+      // console.log(res.data)
       localStorage.setItem('userData', JSON.stringify(res.data))
       navigate('/home')
     } catch (err) {

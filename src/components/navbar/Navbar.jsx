@@ -1,5 +1,5 @@
 import "./navbar.scss";
-import {useState,useEffect} from 'react'
+import { useState, useEffect } from 'react'
 import SearchIcon from "@mui/icons-material/Search";
 import LanguageIcon from "@mui/icons-material/Language";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
@@ -8,7 +8,14 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import ListIcon from "@mui/icons-material/List";
 import Welcome from "../../pages/login/Welcome";
+import { publicRequest } from "../../utils/requestMethod";
+import { tryParse } from "../../utils/tryParse";
+
+
 const Navbar = () => {
+
+  const userData = tryParse(localStorage.getItem('userData'))
+  const companyData = tryParse(localStorage.getItem('company'))
 
   return (
     <div className="navbar">
@@ -48,7 +55,10 @@ const Navbar = () => {
           </div>
         </div> */}
         <div className="item">
-          <Welcome/>
+          <Welcome 
+          user={userData.user}
+          
+          />
         </div>
       </div>
     </div>
