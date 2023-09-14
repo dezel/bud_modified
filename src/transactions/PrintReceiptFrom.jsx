@@ -7,11 +7,13 @@ import { Image } from "@mui/icons-material"
 import Example from "./Example"
 import React, { useRef } from 'react';
 import ReactToPrint from 'react-to-print';
+import { tryParse } from "../utils/tryParse"
 
 // import JustPrint from './JustPrint'
-
 const PrintReceiptForm = ({ transaction }) => {
 
+
+const user = tryParse(localStorage.getItem('userData'))
 
   const componentRef = useRef();
   return (
@@ -34,6 +36,14 @@ const PrintReceiptForm = ({ transaction }) => {
               <tr>
                 <td><span>Amount in Words</span></td>
                 <td><span>{transaction.receipt.amount_in_words}</span></td>
+              </tr>
+              <tr>
+                <td><span>Served by</span></td>
+                <td><span>{user.user.first_name}</span></td>
+              </tr>
+              <tr>
+                <td><span>Payment Method</span></td>
+                <td><span>{transaction.receipt.payment_method}</span></td>
               </tr>
             </tbody>
           </table>

@@ -98,7 +98,7 @@ function App() {
           <Route path="/login" element={<Login/>} />
           {/* Protected Route */}
           {/* <Route element={<ProtectedRoutes />}> */}
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Login />} />
           <Route path="/home" element={<Home />} />
           <Route path="/users" element={<UserList />} />
 

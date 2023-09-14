@@ -16,7 +16,8 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import Welcome from "../../pages/login/Welcome";
 import { useNavigate } from "react-router-dom";
-
+import InitializeUser from "../../pages/login/InitializeUser";
+import { tryParse } from "../../utils/tryParse";
 
 
 const Sidebar = () => {
@@ -28,11 +29,14 @@ const Sidebar = () => {
 
   }
 
+  const user = tryParse(localStorage.getItem('userData'))
+  console.log(user.user.is_superuser)
 
+  // console.log(InitializeUser)
   return (
     <div className="sidebar">
       <div className="top">
-        <Link to="/" style={{ textDecoration: "none" }}>
+        <Link to="/home" style={{ textDecoration: "none" }}>
           <span className="logo">Republic Bank</span>
         </Link>
       </div>
@@ -40,19 +44,22 @@ const Sidebar = () => {
       <div className="center">
         <ul>
           <p className="title">MAIN </p>
-          <Link to="/" style={{ textDecoration: "none" }}>
+          <Link to="/home" style={{ textDecoration: "none" }}>
             <li>
               <DashboardIcon className="icon" />
               <span className="dashboard">Dashboard</span>
             </li>
           </Link>
           <p className="title">LISTS </p>
-          <Link to="/users" style={{ textDecoration: "none" }}>
-            <li>
-              <PersonOutlineIcon className="icon" />
-              <span className="dashboard">Users</span>
-            </li>
-          </Link>
+          {
+            user.user.is_superuser &&
+            <Link to="/users" style={{ textDecoration: "none" }}>
+              <li>
+                <PersonOutlineIcon className="icon" />
+                <span className="dashboard">Users</span>
+              </li>
+            </Link>
+          }
           <Link to="/transactions" style={{ textDecoration: "none" }}>
             <li>
               <HomeWorkIcon className="icon" />
@@ -105,10 +112,13 @@ const Sidebar = () => {
             <PsychologyIcon className="icon" />
             <span className="dashboard">Logs</span>
           </li> */}
-          <li>
-            <SettingsApplicationsIcon className="icon" />
-            <span className="dashboard">Setup</span>
-          </li>
+          {
+            user.user.is_superuser && <li>
+              <SettingsApplicationsIcon className="icon" />
+              <span className="dashboard">Setup</span>
+            </li>
+          }
+
           <p className="title">USER</p>
           <Link to="/profile" style={{ textDecoration: "none" }}>
             <li>
@@ -125,8 +135,8 @@ const Sidebar = () => {
         </ul>
       </div>
       <div className="bottom">
-        <div className="colorOption"></div>
-        <div className="colorOption"></div>
+        {/* <div className="colorOption"></div>
+        <div className="colorOption"></div> */}
       </div>
     </div>
   );

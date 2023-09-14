@@ -18,7 +18,7 @@ const TransactionForm = () => {
 
   const [transaction, setTransaction] = useState()
   const [openPrintForm, setOpenPrintFrom] = useState(false)
-
+  const [selectedTransactionOption, setSelectedTransactionOption] = useState('')
   const handleSubmit = (e) => {
     e.preventDefault();
     const userInfo = tryParse(localStorage.getItem('userData'))
@@ -31,7 +31,8 @@ const TransactionForm = () => {
       entity: userInfo.user.person.entity,
       sub_entity: userInfo.user.person.sub_entity,
       receipt_number: receiptNumber,
-      person: userInfo.user.id
+      person: userInfo.user.id,
+      payment_method:selectedTransactionOption
     }
 
     // console.log(JSON.stringify(postData))
@@ -44,7 +45,15 @@ const TransactionForm = () => {
       )
   };
 
+  const handleSelectChange = (event) => {
+    setSelectedTransactionOption(event.target.value);
+  };
 
+  const transactionOptions = [
+  {
+    id: "Electronic",
+    label: "Electronic"
+  }]
 
   return (
     <div>
@@ -71,11 +80,19 @@ const TransactionForm = () => {
               onChange={(e) => setClientName(e.target.value)}
               size="small"
             />
-            <Controls.Input
+            {/* <Controls.Input
               name="paymentMode"
               label="Payment Mode"
               size="small"
-            />
+            /> */}
+            <select key={setSelectedTransactionOption} onChange={handleSelectChange}>
+              <option key="Cash" value="Cash">Cash</option>
+              {transactionOptions.map((option) => (
+                <option key={option.id} value={option.label}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
           </Grid>
           <Grid item xs={6}>
             <div className="button-group">

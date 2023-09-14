@@ -3,17 +3,18 @@ import React, { useState } from "react";
 import { login } from "../../redux/calls/usersApiCalls";
 import CircularProgress from "@mui/material/CircularProgress";
 import "./login.scss";
-import { Navigate,useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { publicRequest } from "../../utils/requestMethod";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { tryParse } from "../../utils/tryParse";
 // import Home from "../home/Home";
-
+import { Alert, AlertTitle } from '@mui/material'
+import './errorMessage.scss'
 
 const Login = ({ setLoginInfo }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
+  const [loginError, setLoginError] = useState('')
   localStorage.removeItem('userData')
   const user = tryParse(localStorage.getItem('userData'))
   const navigate = useNavigate();
@@ -30,14 +31,15 @@ const Login = ({ setLoginInfo }) => {
       localStorage.setItem('userData', JSON.stringify(res.data))
       navigate('/home')
     } catch (err) {
-      console.log(err);
+      console.log(err.response.data);
+      setLoginError('Username or password incorrect')
     }
 
   };
 
-  if(user){
-    return <Navigate replace to="/home"/>;
-  } 
+  if (user) {
+    return <Navigate replace to="/home" />;
+  }
 
   return (
     <div className="container">
@@ -58,6 +60,8 @@ const Login = ({ setLoginInfo }) => {
             onChange={(e) => setPassword(e.target.value)}
           />
           <button className="loginButton">Login</button>
+          <div>{loginError && <p className="error-message">{loginError}</p>}</div>
+
         </form>
       </div>
     </div>
