@@ -11,6 +11,8 @@ import Select from 'react-select'
 import { publicRequest, userRequest } from "../../utils/requestMethod";
 import ConfirmationDialog from "../../modals/ConfirmationDialog";
 import CompanyDropDownForm from "./CompanyDropDownForm";
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 
 const UsersForm = () => {
@@ -32,7 +34,7 @@ const UsersForm = () => {
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [message, setMessage] = useState('')
   const [selectedCompanyOption, setSelectedCompanyOptions] = useState('')
-
+  const [isSuperUser, setIsSuperUser] = useState()
 
   const getCompanyData = async () => {
     await userRequest.get('/get_entities')
@@ -74,11 +76,14 @@ const UsersForm = () => {
       last_name: lastName,
       password: password,
       username: username,
+      is_superuser: isSuperUser,
       person: {
         entity: 1,
         sub_entity: 1
       }
     }
+
+    console.log(postData)
     userRequest.post('/signup', postData)
       .then((res) => {
         setShowConfirmation(true)
@@ -165,6 +170,10 @@ const UsersForm = () => {
             size="small"
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
+            <FormControlLabel
+              control={<Checkbox checked={isSuperUser} onChange={(e) =>setIsSuperUser(e.target.checked)} />}
+              label="Is administrator"
+            />
           <CompanyDropDownForm />
           {/* <select key={setSelectedCompanyOptions} onChange={handleCompanySelect}>
             <option key="Cash" value="Cash">Please Select</option>
