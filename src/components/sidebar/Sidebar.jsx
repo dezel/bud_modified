@@ -30,7 +30,7 @@ const Sidebar = () => {
   }
 
   const user = tryParse(localStorage.getItem('userData'))
-  console.log(user.user.is_superuser)
+  // console.log(user.user.is_superuser)
 
   // console.log(InitializeUser)
   return (

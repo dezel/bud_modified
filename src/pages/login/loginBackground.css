@@ -1,0 +1,10 @@
+
+.login-container {
+    background-image: url('/public/rbcc_bg.png'); /* Path to the image in the public folder */
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }

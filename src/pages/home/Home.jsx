@@ -9,6 +9,8 @@ import List from "../../components/table/Table";
 import { publicRequest, userRequest } from "../../utils/requestMethod";
 import { Navigate } from "react-router-dom";
 import { tryParse } from "../../utils/tryParse";
+import dayjs from "dayjs";
+import { dateCalendarClasses } from "@mui/x-date-pickers-pro";
 const Home = () => {
   // const [authenticated,setAuthenticated] =useState(null)
 
@@ -21,13 +23,28 @@ const Home = () => {
 
   let currentDateTime = new Date()
 
-  let currentDate = `${currentDateTime.getFullYear()}-${currentDateTime.getMonth()+1}-${currentDateTime.getDate()}`
+  let currentDate = `${currentDateTime.getFullYear()}-${currentDateTime.getMonth() + 1}-${currentDateTime.getDate()}`
 
   let queryData = {
-    transaction_date: currentDate,
+    start_date: dayjs(new Date()).format('YYYY-MM-DD') + ' 00:00:00',
+    end_date: dayjs(new Date()).format('YYYY-MM-DD') + ' 23:59:59',
     person: {
       entity: userData.user.person.entity,
       sub_entity: userData.user.person.sub_entity
+    }
+  }
+
+  const refresh = () => {
+    if (transactions) {
+
+
+      let sum = 0
+      for (var i = 0; i < transactions.length; i++) {
+        // console.log(transactions[i].amount)
+        sum += parseFloat(transactions[i].amount)
+      }
+      // console.log(sum)
+      setAmount(sum)
     }
   }
 
@@ -36,15 +53,8 @@ const Home = () => {
     const res = await userRequest.post('/get_receipts', queryData)
       .then(res => {
         setTransactions(res.data)
-        // console.log(transactions)
+        refresh()
 
-        let sum = 0
-        for (var i = 0; i < transactions.length; i++) {
-          // console.log(transactions[i].amount)
-          sum += parseFloat(transactions[i].amount)
-        }
-        // console.log(sum)
-        setAmount(sum)
       })
       .then(
         getCompany()
@@ -74,6 +84,8 @@ const Home = () => {
           {/* <Widget type="user" />
           <Widget type="order" /> */}
           <Widget type="earning" amount={amount} />
+
+          <button  onClick={(e) => {getTransactions()}}>Refresh</button>
           {/* <Widget type="balance" /> */}
         </div>
         <div className="charts">

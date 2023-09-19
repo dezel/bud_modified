@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
@@ -25,8 +25,8 @@ function App() {
 
   // const [user,setUser]=useState(null)
   // const [cred,setCred] = useState(null)
- 
-  
+
+
 
   // const handleUserInfo = (data)=>{
   //   setUser(data)
@@ -91,24 +91,38 @@ function App() {
   // if (!user) {
   //   return <Login />;
   // }
-  return (
-    <div>
-      <Router>
-        <Routes>
-          <Route path="/login" element={<Login/>} />
-          {/* Protected Route */}
-          {/* <Route element={<ProtectedRoutes />}> */}
-          <Route path="/" element={<Login />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/users" element={<UserList />} />
 
-          <Route path="/transactions" element={<TransactionList />} />
-          <Route path="/profile" element={<Profile />} />
-        
-          {/* Catch */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Router>
+  const myStyle = {
+    // backgroundImage: `url(${process.env.PUBLIC_URL + "/rbcc_bg.png"})`,
+    height: '100vh',
+    marginTop: '-70px',
+    fontSize: '50px',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+  };
+  return (
+    <div style={
+      myStyle
+    }>
+      <div>
+        <Router>
+          <Routes>
+            
+            <Route path="/login" element={<Login />} />
+            {/* Protected Route */}
+            {/* <Route element={<ProtectedRoutes />}> */}
+            <Route path="/" element={<Login />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/users" element={<UserList />} />
+
+            <Route path="/transactions" element={<TransactionList />} />
+            <Route path="/profile" element={<Profile />} />
+
+            {/* Catch */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Router>
+      </div>
     </div>
   );
 }

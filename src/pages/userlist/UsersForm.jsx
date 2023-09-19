@@ -140,6 +140,7 @@ const UsersForm = () => {
         <Grid item xs={6}>
           <Controls.Input
             name="firstName"
+            required
             label="First Name"
             onChange={(e) => setFirstName(e.target.value)}
             size="small"
@@ -147,12 +148,14 @@ const UsersForm = () => {
           <Controls.Input
             name="lastName"
             label="Last Name"
+            required
             onChange={(e) => setLastName(e.target.value)}
             size="small"
           />
           <Controls.Input
             name="username"
             label="Username"
+            required
             onChange={(e) => setUsername(e.target.value)}
             size="small"
           />
@@ -160,11 +163,13 @@ const UsersForm = () => {
             name="password"
             label="Password"
             type="password"
+            required
             size="small"
             onChange={(e) => setPassword(e.target.value)}
           />
           <Controls.Input
             name="confirmPassword"
+            required
             label="Confirm Password"
             type="password"
             size="small"

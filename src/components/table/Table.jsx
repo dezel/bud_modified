@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { publicRequest, userRequest } from "../../utils/requestMethod";
 import axios from "axios";
 import GetReceipt from "./Receipt";
+import dayjs from "dayjs";
 
 
 const List = ({transactions}) => {
@@ -72,7 +73,7 @@ const List = ({transactions}) => {
                 </div>
               </TableCell> */}
               <TableCell className="tableCell">{transaction.amount}</TableCell>
-             <TableCell className="tableCell">{transaction.transaction_date}</TableCell>
+             <TableCell className="tableCell">{dayjs(transaction.transaction_date).format('DD-MMM-YYYY hh:mm a')}</TableCell>
               <TableCell className="tableCell">{transaction.payment_method}</TableCell>
               {/*  <TableCell className="tableCell">{row.method}</TableCell>
               <TableCell className="tableCell"> */}

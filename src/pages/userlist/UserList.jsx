@@ -34,7 +34,7 @@ import {
 } from "@mui/icons-material";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
-import { publicRequest } from "../../utils/requestMethod";
+import { publicRequest, userRequest } from "../../utils/requestMethod";
 // // IMPORT INITIAL FORM VALUE
 // import { initialFValues } from "../../components/component-utils/initValues";
 
@@ -97,7 +97,7 @@ const UserList = () => {
   }
 
 const getUsersDataForEzekiel = async () => {
-  const res = await publicRequest.post('/get_receipts',queryData)
+  const res = await userRequest.post('/get_receipts',queryData)
   console.log('Response',res)
   return res.data
 

@@ -3,13 +3,17 @@ import React, { useState } from "react";
 import { login } from "../../redux/calls/usersApiCalls";
 import CircularProgress from "@mui/material/CircularProgress";
 import "./login.scss";
+import background from './ridge_court.jpg'
 import { Navigate, useNavigate } from "react-router-dom";
 import { publicRequest } from "../../utils/requestMethod";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { tryParse } from "../../utils/tryParse";
+import './loginBackground.css'
+
 // import Home from "../home/Home";
 import { Alert, AlertTitle } from '@mui/material'
 import './errorMessage.scss'
+// import background from './ridge_court.jpg'
 
 const Login = ({ setLoginInfo }) => {
   const [username, setUsername] = useState("");
@@ -41,28 +45,39 @@ const Login = ({ setLoginInfo }) => {
     return <Navigate replace to="/home" />;
   }
 
-  return (
-    <div className="container">
-      <div className="wrapper">
-        <h1 className="title">Login</h1>
-        {/* <CircularProgress/> */}
-        <form className="loginForm" onSubmit={handleLogin}>
-          <input
-            type="type"
-            placeholder="Username"
-            className="input"
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <input
-            type="Password"
-            placeholder="Password"
-            className="input"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <button className="loginButton">Login</button>
-          <div>{loginError && <p className="error-message">{loginError}</p>}</div>
+  const myStyle = {
+    backgroundImage: `url(${process.env.PUBLIC_URL + "/rbcc_bg.png"})`,
+    height: '100vh',
+    marginTop: '-70px',
+    fontSize: '50px',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+  };
 
-        </form>
+  return (
+    <div className="login-container ">
+      <div className="container" >
+        <div className="wrapper">
+          <h1 className="title">Login</h1>
+          {/* <CircularProgress/> */}
+          <form className="loginForm" onSubmit={handleLogin}>
+            <input
+              type="type"
+              placeholder="Username"
+              className="input"
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <input
+              type="Password"
+              placeholder="Password"
+              className="input"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button className="loginButton">Login</button>
+            <div>{loginError && <p className="error-message">{loginError}</p>}</div>
+
+          </form>
+        </div>
       </div>
     </div>
   );
