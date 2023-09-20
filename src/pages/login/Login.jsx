@@ -3,13 +3,13 @@ import React, { useState } from "react";
 import { login } from "../../redux/calls/usersApiCalls";
 import CircularProgress from "@mui/material/CircularProgress";
 import "./login.scss";
-import background from './ridge_court.jpg'
+// import background from './ridge_court.jpg'
 import { Navigate, useNavigate } from "react-router-dom";
 import { publicRequest } from "../../utils/requestMethod";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { tryParse } from "../../utils/tryParse";
 import './loginBackground.css'
-
+// import {background} from './ridge_court.jpg'
 // import Home from "../home/Home";
 import { Alert, AlertTitle } from '@mui/material'
 import './errorMessage.scss'
@@ -46,7 +46,7 @@ const Login = ({ setLoginInfo }) => {
   }
 
   const myStyle = {
-    backgroundImage: `url(${process.env.PUBLIC_URL + "/rbcc_bg.png"})`,
+    // backgroundImage: background,
     height: '100vh',
     marginTop: '-70px',
     fontSize: '50px',
@@ -55,7 +55,7 @@ const Login = ({ setLoginInfo }) => {
   };
 
   return (
-    <div className="login-container ">
+    <div className="login-container">
       <div className="container" >
         <div className="wrapper">
           <h1 className="title">Login</h1>
