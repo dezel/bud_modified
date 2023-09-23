@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import Sidebar from "../components/sidebar/Sidebar";
 import Navbar from "../components/navbar/Navbar";
 import { CSVLink } from 'react-csv'
-import DatePicker from "react-datepicker";
+// import DatePicker from "react-datepicker";
 // import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -71,9 +71,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const headCells = [
   { id: "receiptNumber", label: "Receipt Number" },
   { id: "amount", label: "Amount" },
-  { id: "transaction_date", label: "Date", disableSorting: true },
+  { id: "transaction_date", label: "Date" },
   { id: "payment_method", label: "Payment Method" },
-  { id: "client_name", label: "Payment Method" },
+  { id: "client_name", label: "Client Name" },
   // { id: "client_name", label: "Status", disableSorting: true },
   // { id: "actions", label: "Actions", disableSorting: true },
 ];
@@ -228,7 +228,6 @@ const TransactionList = () => {
   };
 
   const handleExport = () => {
-
     if (transactions) {
       let dataForExport =
         transactions.map((transaction) => ({

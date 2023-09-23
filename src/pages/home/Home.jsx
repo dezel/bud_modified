@@ -3,27 +3,29 @@ import { useEffect, useState } from "react";
 import Sidebar from "./../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import Widget from "../../components/widget/Widget";
-import Featured from "../../components/featured/Featured";
-import Chart from "./../../components/chart/Chart";
+// import Featured from "../../components/featured/Featured";
+// import Chart from "./../../components/chart/Chart";
 import List from "../../components/table/Table";
-import { publicRequest, userRequest } from "../../utils/requestMethod";
+import { userRequest } from "../../utils/requestMethod";
 import { Navigate } from "react-router-dom";
 import { tryParse } from "../../utils/tryParse";
 import dayjs from "dayjs";
-import { dateCalendarClasses } from "@mui/x-date-pickers-pro";
+// import { dateCalendarClasses } from "@mui/x-date-pickers-pro";
+// import { set } from "date-fns";
+// import { ConstructionOutlined } from "@mui/icons-material";
 const Home = () => {
   // const [authenticated,setAuthenticated] =useState(null)
 
   const userData = tryParse(localStorage.getItem('userData'))
 
   const [amount, setAmount] = useState(0)
-  const [user, setUser] = useState([])
+  // const [user, setUser] = useState([])
   const [company, setCompany] = useState({})
   const [transactions, setTransactions] = useState([])
 
-  let currentDateTime = new Date()
+  // let currentDateTime = new Date()
 
-  let currentDate = `${currentDateTime.getFullYear()}-${currentDateTime.getMonth() + 1}-${currentDateTime.getDate()}`
+  // let currentDate = `${currentDateTime.getFullYear()}-${currentDateTime.getMonth() + 1}-${currentDateTime.getDate()}`
 
   let queryData = {
     start_date: dayjs(new Date()).format('YYYY-MM-DD') + ' 00:00:00',
@@ -50,7 +52,7 @@ const Home = () => {
 
   // console.log(queryData)
   const getTransactions = async () => {
-    const res = await userRequest.post('/get_receipts', queryData)
+    await userRequest.post('/get_receipts', queryData)
       .then(res => {
         setTransactions(res.data)
         refresh()
@@ -63,14 +65,44 @@ const Home = () => {
 
   const getCompany = async () => {
     // console.log(userData.user.person.entity)
-    const res = await userRequest.get('/get_entity/' + userData.user.person.entity)
+    await userRequest.get('/get_entity/' + userData.user.person.entity)
       .then(res => setCompany(res.data))
     // .then(res => console.log(res.data))
   }
 
+
+
+
+  const getSubEntities = async () => {
+    await (userRequest.get('/entities_subs'))
+      .then((res) => {
+
+        localStorage.setItem('branches', res.data)
+
+      })
+  }
+
+
+  const getEntities = async () => {
+    await (userRequest.get('/get_entities'))
+      .then((res) => {
+        console.log(res.data)
+        localStorage.setItem('companies', JSON.stringify(res.data))
+      }
+      )
+  }
+
+
+  // const [companyOptions, setCompanyOptions] = useState()
+
   useEffect(() => {
     getTransactions()
+    getSubEntities()
+    getEntities()
+    // setCompanyOptions(localStorage.getItem('companies'))
   }, [])
+
+  // console.log(companyOptions)
 
   if (!userData) {
     return <Navigate replace to="/login" />;
@@ -79,13 +111,17 @@ const Home = () => {
     <div className="home">
       <Sidebar />
       <div className="homeContainer">
+
         <Navbar company={company} user={userData} />
         <div className="widgets">
           {/* <Widget type="user" />
           <Widget type="order" /> */}
           <Widget type="earning" amount={amount} />
 
-          <button  onClick={(e) => {getTransactions()}}>Refresh</button>
+          <button onClick={(e) => {
+            getTransactions()
+            getEntities()
+          }}>Refresh</button>
           {/* <Widget type="balance" /> */}
         </div>
         <div className="charts">

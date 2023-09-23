@@ -162,10 +162,13 @@ const TransactionForm = () => {
         </div>
       </Form>
       <Popup
+
         openPopup={openPrintForm}
         setOpenPopup={setOpenPrintFrom}
       >
+        <div >
         <PrintReceiptForm transaction={transaction} />
+        </div>
       </Popup>
     </div>
   );

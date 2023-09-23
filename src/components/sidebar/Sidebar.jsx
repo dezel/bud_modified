@@ -18,30 +18,31 @@ import Welcome from "../../pages/login/Welcome";
 import { useNavigate } from "react-router-dom";
 import InitializeUser from "../../pages/login/InitializeUser";
 import { tryParse } from "../../utils/tryParse";
-
+import { Height, Image } from "@mui/icons-material";
+import "./republicIcon.css"
 
 const Sidebar = () => {
   const navigate = useNavigate()
   const handleLogout = (e) => {
     e.preventDefault();
     localStorage.removeItem('userData')
+    localStorage.removeItem('companies')
+    localStorage.removeItem('branches')
     navigate('/login')
 
   }
 
   const user = tryParse(localStorage.getItem('userData'))
-  // console.log(user.user.is_superuser)
-
-  // console.log(InitializeUser)
   return (
     <div className="sidebar">
       <div className="top">
         <Link to="/home" style={{ textDecoration: "none" }}>
-          <span className="logo">Republic Bank</span>
+<img style={{ height: 20, width: 20 }} src="/RBLg.ico" />
+          <span className="logo"><h5>Republic Bank</h5></span>
         </Link>
       </div>
       <hr />
-      <div className="center">
+      <div className="center">  
         <ul>
           <p className="title">MAIN </p>
           <Link to="/home" style={{ textDecoration: "none" }}>
@@ -113,8 +114,9 @@ const Sidebar = () => {
             <span className="dashboard">Logs</span>
           </li> */}
           {
-            user.user.is_superuser && <li>
-              <SettingsApplicationsIcon className="icon" />
+            user.user.is_superuser &&
+            <li>
+              <SettingsApplicationsIcon to="/setup" className="icon" />
               <span className="dashboard">Setup</span>
             </li>
           }

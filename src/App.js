@@ -20,6 +20,7 @@ import Welcome from "./pages/login/Welcome";
 import ProtectedRoutes from "./utils/ProtectedRoute";
 import TransactionList from "./transactions/TransactionList";
 import Profile from "./profile/Profile";
+import Setup from "./setup/Setup"
 function App() {
   // let userInfo
 
@@ -101,9 +102,7 @@ function App() {
     backgroundRepeat: 'no-repeat',
   };
   return (
-    <div style={
-      myStyle
-    }>
+    
       <div>
         <Router>
           <Routes>
@@ -114,8 +113,11 @@ function App() {
             <Route path="/" element={<Login />} />
             <Route path="/home" element={<Home />} />
             <Route path="/users" element={<UserList />} />
+            <Route path="/users" element={<UserList />} />
 
             <Route path="/transactions" element={<TransactionList />} />
+
+            <Route path="/setup" element={<Setup />} />
             <Route path="/profile" element={<Profile />} />
 
             {/* Catch */}
@@ -123,7 +125,7 @@ function App() {
           </Routes>
         </Router>
       </div>
-    </div>
+
   );
 }
 

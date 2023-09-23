@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { login } from "../../redux/calls/usersApiCalls";
 import CircularProgress from "@mui/material/CircularProgress";
 import "./login.scss";
-// import background from './ridge_court.jpg'
 import { Navigate, useNavigate } from "react-router-dom";
 import { publicRequest } from "../../utils/requestMethod";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -13,7 +12,6 @@ import './loginBackground.css'
 // import Home from "../home/Home";
 import { Alert, AlertTitle } from '@mui/material'
 import './errorMessage.scss'
-// import background from './ridge_court.jpg'
 
 const Login = ({ setLoginInfo }) => {
   const [username, setUsername] = useState("");
@@ -33,12 +31,12 @@ const Login = ({ setLoginInfo }) => {
       const res = await publicRequest.post("/login", { username, password });
       // console.log(res.data)
       localStorage.setItem('userData', JSON.stringify(res.data))
+
       navigate('/home')
     } catch (err) {
-      console.log(err.response.data);
+      // console.log(err.response.data);
       setLoginError('Username or password incorrect')
     }
-
   };
 
   if (user) {
