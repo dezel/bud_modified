@@ -4,12 +4,6 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import HomeWorkIcon from "@mui/icons-material/HomeWork";
 // import StoreIcon from "@mui/icons-material/Store";
-import CreditCardIcon from "@mui/icons-material/CreditCard";
-import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import InsertChartIcon from "@mui/icons-material/InsertChart";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import SettingsSystemDaydreamIcon from "@mui/icons-material/SettingsSystemDaydream";
-import PsychologyIcon from "@mui/icons-material/Psychology";
 import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
@@ -37,12 +31,12 @@ const Sidebar = () => {
     <div className="sidebar">
       <div className="top">
         <Link to="/home" style={{ textDecoration: "none" }}>
-<img style={{ height: 20, width: 20 }} src="/RBLg.ico" />
+          <img style={{ height: 20, width: 20 }} src="/RBLg.ico" />
           <span className="logo"><h5>Republic Bank</h5></span>
         </Link>
       </div>
       <hr />
-      <div className="center">  
+      <div className="center">
         <ul>
           <p className="title">MAIN </p>
           <Link to="/home" style={{ textDecoration: "none" }}>
@@ -67,12 +61,12 @@ const Sidebar = () => {
               <span className="dashboard">Transactions</span>
             </li>
           </Link>
-          <Link to="/funeralDonation" style={{ textDecoration: "none" }}>
+          {/* <Link to="/funeralDnation" style={{ textDecoration: "none" }}>
             <li>
               <HomeWorkIcon className="icon" />
               <span className="dashboard">Funeral</span>
             </li>
-          </Link>
+          </Link> */}
           {/* <Link to="/branchdept" style={{ textDecoration: "none" }}>
             <li>
               <HomeWorkIcon className="icon" />
@@ -115,12 +109,13 @@ const Sidebar = () => {
           </li> */}
           {
             user.user.is_superuser &&
-            <li>
-              <SettingsApplicationsIcon to="/setup" className="icon" />
-              <span className="dashboard">Setup</span>
-            </li>
+            <Link to="/setup" style={{ textDecoration: "none" }}>
+              <li>
+                <SettingsApplicationsIcon to="/setup" className="icon" />
+                <span className="dashboard">Setup</span>
+              </li>
+            </Link>
           }
-
           <p className="title">USER</p>
           <Link to="/profile" style={{ textDecoration: "none" }}>
             <li>

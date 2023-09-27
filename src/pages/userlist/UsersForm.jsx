@@ -28,7 +28,8 @@ const UsersForm = () => {
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [message, setMessage] = useState('')
 
-  const [isSuperUser, setIsSuperUser] = useState()
+  const [isSuperUser, setIsSuperUser] = useState(false)
+  const [isActive, setIsactive] = useState(true)
   const [entity, setEntity] = useState()
   const [subEntity, setSubEntity] = useState()
   const [branches, setBranches] = useState()
@@ -76,15 +77,37 @@ const UsersForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (password !== confirmPassword){
+      setMessage("Passwords do not match")
+      setShowConfirmation(true)
+      return
+    }
+    
+    if(!isSuperUser && !entity && !subEntity){
+      setMessage("Please confirm company and branch")
+      setShowConfirmation(true)
+      return
+    }
+
+    let passwordRegex =/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$/
+
+    if (!password.match(passwordRegex)){
+      // setMessage("Minimum eight and maximum 10 characters, at least one uppercase letter, one lowercase letter, one number and one special character")
+      setMessage("Password does not meet the minimum password requirement.")
+      setShowConfirmation(true)
+      return
+    }
+
     const postData = {
       first_name: firstName,
       last_name: lastName,
       password: password,
       username: username,
       is_superuser: isSuperUser,
+      is_active: isActive,
       person: {
-        entity: entity,
-        sub_entity: subEntity
+        entity: isSuperUser?1: entity,
+        sub_entity: isSuperUser?1:subEntity
       }
     }
 
@@ -94,14 +117,27 @@ const UsersForm = () => {
         setShowConfirmation(true)
         setMessage('User added successfully')
         // console.log(res)
+
+        setFirstName('')
+        setLastName('')
+        setUsername('')
+        setPassword('')
+        setConfirmPassword('')
+        setIsSuperUser(false)
+        setIsactive(false)
+
       })
-      .then()
-      .catch((err) => console.log(err.messages))
+      .catch((err) => {console.log(err.response.data.username[0])
+      setMessage(err.response.data.username[0])
+
+      setShowConfirmation(true)
+      })
   };
 
   const handleConfirm = () => {
     setShowConfirmation(false);
   };
+
   const handleCancel = () => {
     // Close the confirmation dialog without performing the action
     setShowConfirmation(false);
@@ -127,6 +163,8 @@ const UsersForm = () => {
             label="First Name"
             onChange={(e) => setFirstName(e.target.value)}
             size="small"
+            value={firstName}
+
           />
           <Controls.Input
             name="lastName"
@@ -134,6 +172,7 @@ const UsersForm = () => {
             required
             onChange={(e) => setLastName(e.target.value)}
             size="small"
+            value={lastName}
           />
           <Controls.Input
             name="username"
@@ -141,6 +180,7 @@ const UsersForm = () => {
             required
             onChange={(e) => setUsername(e.target.value)}
             size="small"
+            value={username}
           />
           <Controls.Input
             name="password"
@@ -149,6 +189,7 @@ const UsersForm = () => {
             required
             size="small"
             onChange={(e) => setPassword(e.target.value)}
+            value={password}
           />
           <Controls.Input
             name="confirmPassword"
@@ -157,12 +198,16 @@ const UsersForm = () => {
             type="password"
             size="small"
             onChange={(e) => setConfirmPassword(e.target.value)}
+            value={confirmPassword}
           />
           <FormControlLabel
             control={<Checkbox checked={isSuperUser} onChange={(e) => setIsSuperUser(e.target.checked)} />}
             label="Is administrator"
           />
-
+          <FormControlLabel
+            control={<Checkbox checked={isActive} onChange={(e) => setIsactive(e.target.checked)} />}
+            label="Is active"
+          />
           {
             !isSuperUser ?
               <>
@@ -175,11 +220,14 @@ const UsersForm = () => {
                       handleCompanyChange(e)
                     }
                   }
+                  required
                 />
+                <div style={{ color: "white" }}>-</div>
                 <Select
                   defaultValue={{ label: "Select Branch", value: 0 }}
                   options={branches}
                   onChange={(e) => setSubEntity(e.value)}
+                  required
                 />
               </> : <></>
           }
@@ -193,7 +241,8 @@ const UsersForm = () => {
               text="Submit"
               size="small"
             />
-            {showConfirmation && (
+            {
+            showConfirmation && (
               <ConfirmationDialog
                 message={message}
                 onConfirm={handleConfirm}

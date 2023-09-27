@@ -16,6 +16,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 // import Select from '@mui/material/Select';
 import reactSelect from "react-select";
+import ConfirmationDialog from "../modals/ConfirmationDialog";
 
 const TransactionForm = () => {
   const [receiptNumber, setReceiptNumber] = useState('')
@@ -26,12 +27,14 @@ const TransactionForm = () => {
   const [openPrintForm, setOpenPrintFrom] = useState(false)
   const [selectedTransactionOption, setSelectedTransactionOption] = useState('')
   const [isElectronic, setIsElectronic] = useState(false)
-
+  const [message, setMessage] = useState('')
+  const [showConfirmation, setShowConfirmation] = useState(false)
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const userInfo = tryParse(localStorage.getItem('userData'))
     // console.log(userInfo)
+
 
 
     const postData = {
@@ -52,9 +55,19 @@ const TransactionForm = () => {
         console.log(freshTrans)
         setTransaction(res.data.receipt)
         console.log(res.data.receipt)
+        setClientName('')
+        setAmount('')
+        setIsElectronic(false)
+        setReceiptNumber('')
         setOpenPrintFrom(true)
       }
       )
+      .catch((error) => {
+        console.log(error)
+        setMessage('New transaction failed')
+        setShowConfirmation(true)
+
+      })
   };
 
   const transOptions = [
@@ -97,56 +110,32 @@ const TransactionForm = () => {
               onChange={(e) => setAmount(e.target.value)}
               size="small"
               required
-              />
+            />
             <Controls.Input
               name="clientName"
               label="Client Name"
               onChange={(e) => setClientName(e.target.value)}
               size="small"
               required
-              />
-            {/* <Controls.Input
-              name="paymentMode"
-              label="Payment Mode"
-              size="small"
-            /> */}
-            {/* <select key={setSelectedTransactionOption} onChange={handleSelectChange}>
-              <option key="Cash" value="Cash">Cash</option>
-              {transactionOptions.map((option) => (
-                <option key={option.id} value={option.label}>
-                  {option.label}
-                </option>
-              ))}
-            </select> */}
-              {
-                isElectronic ?
-                  <>
-                    <Controls.Input
-                      name="invoiceNumber"
-                      label="Invoice Number"
-                      onChange={(e) => setReceiptNumber(e.target.value)}
-                      required={isElectronic}
-                      size="small"
-                    />
-                    <FormControl fullWidth>
-                      <InputLabel id="demo-simple-select-label"></InputLabel>
-                      {/* <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value=""
-                        label="Electronic Type"
-                        onChange={handleSelectChange}
-                        required={isElectronic}
-                      >
-                        <MenuItem key={2} value="Momo">Mobile Money</MenuItem>
-                        <MenuItem key={3} value="Card">Card</MenuItem>
-                      </Select> */}
-                      <Select styles={colourStyles} required={isElectronic} options={transOptions} onChange={(e) =>setSelectedTransactionOption(e)}></Select>
-                    </FormControl></>
-                  :
-                  <>
-                  </>
-              }
+            />
+            {
+              isElectronic ?
+                <>
+                  <Controls.Input
+                    name="invoiceNumber"
+                    label="Invoice Number"
+                    onChange={(e) => setReceiptNumber(e.target.value)}
+                    required={isElectronic}
+                    size="small"
+                  />
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label"></InputLabel>
+                    <Select required={isElectronic} options={transOptions} onChange={(e) => setSelectedTransactionOption(e)}></Select>
+                  </FormControl></>
+                :
+                <>
+                </>
+            }
           </Grid>
           <Grid item xs={6}>
             <div className="button-group">
@@ -155,19 +144,25 @@ const TransactionForm = () => {
                 type="submit"
                 text="Submit and Print"
                 size="small"
-              // onClick={handleSubmit}
               />
             </div>
           </Grid>
         </div>
       </Form>
+      {showConfirmation && (
+        <ConfirmationDialog
+          message={message}
+          onConfirm={setShowConfirmation(false)}
+          onCancel={setShowConfirmation(false)}
+        />
+      )}
       <Popup
 
         openPopup={openPrintForm}
         setOpenPopup={setOpenPrintFrom}
       >
         <div >
-        <PrintReceiptForm transaction={transaction} />
+          <PrintReceiptForm transaction={transaction} />
         </div>
       </Popup>
     </div>

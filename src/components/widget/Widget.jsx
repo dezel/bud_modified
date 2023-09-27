@@ -44,11 +44,11 @@ const Widget = ({ type, amount }) => {
       };
 
       break;
-    case "earning":
+    case "collections":
       data = {
-        title: "EARNINGS",
+        title: "Collections",
         isMoney: true,
-        link: "View net earnings",
+        // link: "View net earnings",
         icon: (
           <MonetizationOnOutlinedIcon
             className="icon"

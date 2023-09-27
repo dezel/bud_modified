@@ -86,7 +86,6 @@ const Home = () => {
   const getEntities = async () => {
     await (userRequest.get('/get_entities'))
       .then((res) => {
-        console.log(res.data)
         localStorage.setItem('companies', JSON.stringify(res.data))
       }
       )
@@ -116,7 +115,7 @@ const Home = () => {
         <div className="widgets">
           {/* <Widget type="user" />
           <Widget type="order" /> */}
-          <Widget type="earning" amount={amount} />
+          <Widget type="collections" amount={amount} />
 
           <button onClick={(e) => {
             getTransactions()
@@ -128,10 +127,10 @@ const Home = () => {
           {/* <Featured/> */}
           {/* <Chart aspect={2 / 1} title="Last 6 Months(Revenue)" /> */}
         </div>
-        <div className="listContainer">
+        {/* <div className="listContainer">
           <div className="listTitle">{ }</div>
           <List transactions={transactions} />
-        </div>
+        </div> */}
       </div>
     </div>
   );

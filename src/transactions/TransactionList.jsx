@@ -49,6 +49,7 @@ import { publicRequest, userRequest } from "../utils/requestMethod";
 import { useStateManager } from "react-select";
 import Papa from "papaparse";
 import PrintReceiptForm from "./PrintReceiptFrom";
+import ConfirmationDialog from "../modals/ConfirmationDialog";
 
 // // IMPORT INITIAL FORM VALUE
 // import { initialFValues } from "../../components/component-utils/initValues";
@@ -137,6 +138,12 @@ const TransactionList = () => {
   const [recordForEdit, setRecordForEdit] = useState(null);
   const [startDate, setStartDate] = useState(dayjs(new Date()).format('YYYY-MM-DD'))
   const [endDate, setEndDate] = useState(dayjs(new Date()).format('YYYY-MM-DD'))
+  const [trans, setTrans] = useState()
+  const [confirmDelete, setConfirmDelete] = useState(false)
+  const [showConfirmation, setShowConfirmation] = useState(false)
+  const [message, setMessage] = useState('')
+
+
 
   // NOTIFICATION
   const [notify, setNotify] = useState({
@@ -233,14 +240,15 @@ const TransactionList = () => {
         transactions.map((transaction) => ({
           receipt_number: transaction.receipt_number,
           amount: transaction.amount,
-          transaction_date: transaction.transaction_date,
+          transaction_date: dayjs(transaction.transaction_date),
           client_name: transaction.client_name,
-          payment_method: transaction.payment_method
+          payment_method: transaction.payment_method,
+          electronic_trans_type: transaction.electronic_trans_type
         })
         )
 
 
-
+      console.log(transactions)
       // const dataForExport 
       // data.map(({id, deviceName}) => ({id, deviceName})
       let trans = transactions.map((element) => (
@@ -250,16 +258,47 @@ const TransactionList = () => {
 
 
 
-      console.log(dataForExport)
+
       let csvData = Papa.unparse(dataForExport)
-      exportData(csvData, 'transactions.csv', 'text/csv;charset=utf-8;')
+      if (csvData) {
+        exportData(csvData, 'transactions.csv', 'text/csv;charset=utf-8;')
+
+      }
     }
   }
 
+  const handleRowClick = (transaction) => {
+    setTrans(transaction)
+    setOpenPrintPopup(true)
 
-  const handleClose = () => {
-    setOpenPrintPopup(false)
   }
+
+  const handleDelete = (transaction) => {
+
+
+    if (confirmDelete) {
+
+      userRequest.delete(`/delete_receipt/${transaction.id}`)
+        .then((res) => {
+          console.log(res)
+          console.log('transaction deleted successfully')
+          setMessage('transaction deleted successfully')
+          setShowConfirmation(false)
+        })
+    }
+  }
+
+  const handleCancel = () => {
+    setShowConfirmation(false)
+  }
+  const handleConfirm = () => {
+    console.log('confirmed')
+    setMessage('Are you sure you want to delete this transaction? ')
+    setShowConfirmation(true)
+    setConfirmDelete(true)
+
+  }
+
   return (
     <div className="userlist">
       <Sidebar />
@@ -321,7 +360,6 @@ const TransactionList = () => {
                   className="add-button"
                   onClick={() => {
                     setOpenPopup(true);
-                    setRecordForEdit(null);
                   }}
                 />
               </div>
@@ -331,13 +369,13 @@ const TransactionList = () => {
               <TblHead headCells={headCells} />
               <TableBody>
                 {transactions.map((transaction) => (
-                  <StyledTableRow onClick={
-                    (e) => {
-                      console.log(transaction)
-                      setOpenPrintPopup(true)
-                    }
-                  } key={transaction.id}>
-                    <StyledTableCell onClick={console.log('cell clicked')}>{transaction.receipt_number}</StyledTableCell>
+                  <StyledTableRow
+                    // onClick={(e) => {
+                    //   handleRowClick(transaction)
+                    // }
+                    // } 
+                    key={transaction.id}>
+                    <StyledTableCell >{transaction.receipt_number}</StyledTableCell>
                     <StyledTableCell>{transaction.amount}</StyledTableCell>
                     <StyledTableCell>{dayjs(transaction.transaction_date).format('DD-MMM-YYYY hh:mm a')}</StyledTableCell>
                     <StyledTableCell>{transaction.payment_method}</StyledTableCell>
@@ -345,27 +383,26 @@ const TransactionList = () => {
                     <StyledTableCell>
                       <Controls.ActionButton
                         style={btnPrimary}
-                        onClick={() => { setOpenPrintPopup(true) }}
+                      // onClick={() => { setOpenPrintPopup(true) }}
                       >
 
-                        <EditOutlined fontSize="small" />
+                        <EditOutlined onClick={(e) => handleRowClick(transaction)} fontSize="small" />
                       </Controls.ActionButton>
                       <Controls.ActionButton
                         style={btnSecondary}
-                        onClick={(e) => setOpenPrintPopup}
+                      // onClick={(e) => setOpenPrintPopup(false)}
                       >
-                        <CloseIcon fontSize="small" />
-                        <Popup
-                          title=""
-                          openPopup={openPrintPopup}
-                          setOpenPopup={setOpenPrintPopup}
-                        >
-                          <PrintReceiptForm transaction={transaction} />
-                        </Popup>
+                        <CloseIcon
+                          // onClick={console.log('edit')} 
+                          onClick={(e) => {
+                            handleConfirm()
+                            setTrans(transaction)
+                          }}
+                          fontSize="small"
+                        />
                       </Controls.ActionButton>
                     </StyledTableCell>
                   </StyledTableRow>
-
                 ))}
               </TableBody>
             </TblContainer>
@@ -374,14 +411,24 @@ const TransactionList = () => {
             title="Transaction Form"
             openPopup={openPopup}
             setOpenPopup={setOpenPopup}
-
           >
             <TransactionForm />
           </Popup>
-
-
+          <Popup
+            title=""
+            openPopup={openPrintPopup}
+            setOpenPopup={setOpenPrintPopup}
+          >
+            <PrintReceiptForm transaction={trans} />
+          </Popup>
+          {showConfirmation &&
+            <ConfirmationDialog
+              message={message}
+              onConfirm={(e) => handleDelete(trans)}
+              onCancel={(e) => handleCancel()}
+              showCancel={true}
+            />}
           <Notification notify={notify} setNotify={setNotify} />
-
         </div>
       </div>
     </div>

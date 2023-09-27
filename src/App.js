@@ -113,11 +113,8 @@ function App() {
             <Route path="/" element={<Login />} />
             <Route path="/home" element={<Home />} />
             <Route path="/users" element={<UserList />} />
-            <Route path="/users" element={<UserList />} />
-
-            <Route path="/transactions" element={<TransactionList />} />
-
             <Route path="/setup" element={<Setup />} />
+            <Route path="/transactions" element={<TransactionList />} />
             <Route path="/profile" element={<Profile />} />
 
             {/* Catch */}

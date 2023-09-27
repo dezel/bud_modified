@@ -35,6 +35,8 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import { publicRequest, userRequest } from "../../utils/requestMethod";
+import PasswordReset from "./PasswordReset";
+
 // // IMPORT INITIAL FORM VALUE
 // import { initialFValues } from "../../components/component-utils/initValues";
 
@@ -45,6 +47,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
+
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:hover": {
     backgroundColor: "#fffbf2",
@@ -54,15 +57,43 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 // INITIALIZE TABLE HEAD INFO
 const headCells = [
-  { id: "fullname", label: "Full Name" },
-  { id: "username", label: "Username" },
-  { id: "gender", label: "Gender", disableSorting: true },
+  { id: "fullname", label: "First name" },
+  { id: "username", label: "Last name" },
+  { id: "gender", label: "Username" },
   { id: "staffId", label: "Staff ID" },
-  { id: "userStatus", label: "Status", disableSorting: true },
+  { id: "userStatus", label: "Is active" },
   { id: "actions", label: "Actions", disableSorting: true },
 ];
 
+
+
+
+
 const UserList = () => {
+
+  const [returnedUsers, setReturnedUsers] = useState()
+  const [userForEdit, setUserForEdit] = useState()
+  const [searchString, setSearchString] = useState('')
+  const [usernameEdit, setUsernameEdit] = useState('')
+  const [userEdit, setUserEdit] = useState()
+  const [trans, setTrans] = useState()
+
+
+
+  const handleSearch = (e) => {
+
+    let queryString = {
+      search_string: e.target.value
+    }
+    userRequest.post('/get_users', queryString)
+      .then((res) => {
+        console.log(res.data)
+        setReturnedUsers(res.data)
+      })
+  }
+
+
+
   // STLYES FOR PRIMARY AND SECONDARY BUTTONS
   const btnPrimary = {
     minWidth: 0,
@@ -86,22 +117,7 @@ const UserList = () => {
     },
   });
 
-  // GET USERS DATA FOR EZEKIEL
 
-  let queryData = {
-    transaction_date: "2023-08-24",
-    person: {
-      entity: 1,
-      sub_entity: 1
-    }
-  }
-
-  const getUsersDataForEzekiel = async () => {
-    const res = await userRequest.post('/get_receipts', queryData)
-    console.log('Response', res)
-    return res.data
-
-  }
 
   // useEffect(()=>{
   //   const data = getUsersDataForEzekiel()
@@ -110,7 +126,7 @@ const UserList = () => {
 
   // POP UP MODAL
   const [openPopup, setOpenPopup] = useState(false);
-
+  const [openReset, setOpenReset] = useState(false)
   // SET RECORDS FOR EDIT
   const [recordForEdit, setRecordForEdit] = useState(null);
 
@@ -146,18 +162,18 @@ const UserList = () => {
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTable(usersData, filterFn);
 
-  const handleSearch = (e) => {
-    let target = e.target;
-    setFilterFn({
-      fn: (items) => {
-        if (target.value === "") return items;
-        else
-          return items.filter((x) =>
-            x.fullname.toLowerCase().includes(target.value)
-          );
-      },
-    });
-  };
+  // const handleSearch = (e) => {
+  //   let target = e.target;
+  //   setFilterFn({
+  //     fn: (items) => {
+  //       if (target.value === "") return items;
+  //       else
+  //         return items.filter((x) =>
+  //           x.fullname.toLowerCase().includes(target.value)
+  //         );
+  //     },
+  //   });
+  // };
 
   // SET OPEN IN POPUP I.E RECORDS FOR EDIT
   const openInPopup = (item) => {
@@ -166,33 +182,11 @@ const UserList = () => {
     // console.log(recordForEdit);
   };
 
-  // ADD OR EDITING USERS
-  // const addOrEdit = (user, resetForm) => {
-  //   if (user.id === 0) {
-  //     createNewUser(dispatch, user);
-  //     resetForm();
-  //     setOpenPopup(false);
-  //     setNotify({
-  //       isOpen: true,
-  //       message: "Submitted Successfully",
-  //       type: "success",
-  //     });
-  //   } else {
-  //     updateUser(dispatch, user.id, user);
-  //     resetForm();
-  //     setOpenPopup(false);
-  //     setNotify({
-  //       isOpen: true,
-  //       message: "Submitted Successfully",
-  //       type: "success",
-  //     });
-  //   }
 
-  // if user_id = 0 then perform insert
-  // else perform update operation
-  // ADD DATA INTO DB
-  // code ...
-  //};
+  const handleResetOpen = (user) => {
+    setUserForEdit(user)
+    setUsernameEdit(user.username)
+  }
 
   return (
     <div className="userlist">
@@ -219,7 +213,7 @@ const UserList = () => {
                     </InputAdornment>
                   ),
                 }}
-                onChange={handleSearch}
+                onChange={(e) => handleSearch(e)}
               />
               <Controls.Button
                 text="Add New"
@@ -233,43 +227,57 @@ const UserList = () => {
                 }}
               />
             </Toolbar>
-            {/* <TblContainer>
-            <TblHead headCells={headCells} />
-            <TableBody>
-              {recordsAfterPagingAndSorting().map((user) => (
-                <StyledTableRow key={user.id}>
-                  <StyledTableCell>{user.fullname}</StyledTableCell>
-                  <StyledTableCell>{user.username}</StyledTableCell>
-                  <StyledTableCell>{user.gender}</StyledTableCell>
-                  <StyledTableCell>{user.staff_id}</StyledTableCell>
-                  <StyledTableCell>{user.user_status}</StyledTableCell>
-                  <StyledTableCell>
-                    <Controls.ActionButton
-                      style={btnPrimary}
-                      onClick={() => {
-                        openInPopup(user);
-                      }}
-                    >
-                      <EditOutlined fontSize="small" />
-                    </Controls.ActionButton>
-                    <Controls.ActionButton
-                      style={btnSecondary}
-                    >
-                      <CloseIcon fontSize="small" />
-                    </Controls.ActionButton>
-                  </StyledTableCell>
-                </StyledTableRow>
-              ))}
-            </TableBody>
-          </TblContainer> */}
-            <Accordion />
+
+
+            <TblContainer>
+              <TblHead headCells={headCells} />
+              {returnedUsers &&
+                <TableBody>
+                  {returnedUsers.map((user) => (
+                    <StyledTableRow key={user.id}>
+                      <StyledTableCell>{user.first_name}</StyledTableCell>
+                      <StyledTableCell>{user.last_name}</StyledTableCell>
+                      <StyledTableCell>{user.username}</StyledTableCell>
+                      <StyledTableCell>{user.id}</StyledTableCell>
+                      <StyledTableCell>{user.is_active}</StyledTableCell>
+                      <StyledTableCell>
+                        <Controls.ActionButton
+                          style={btnPrimary}
+                          onClick={() => setUserEdit(user)}
+                        >
+                          <EditOutlined fontSize="small" />
+                        </Controls.ActionButton>
+                        <Controls.ActionButton
+                          style={btnSecondary}
+                        >
+                          <div onClick={(e) => {
+                              setOpenReset(true)
+                              setTrans(user)
+                            }
+                          } >Reset</div>
+                          {/* <CloseIcon fontSize="small" /> */}
+                        </Controls.ActionButton>
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  ))}
+                </TableBody>
+              }
+            </TblContainer>
+
           </div>
           <Popup
             title="Users Form"
             openPopup={openPopup}
             setOpenPopup={setOpenPopup}
           >
-            <UsersForm recordForEdit={{}} />
+            <UsersForm user={userForEdit} />
+          </Popup>
+          <Popup
+            title="Reset password"
+            openPopup={openReset}
+            setOpenPopup={setOpenReset}
+          >
+            <PasswordReset userEdit={trans} />
           </Popup>
           <Notification notify={notify} setNotify={setNotify} />
         </div>
