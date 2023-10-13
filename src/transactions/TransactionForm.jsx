@@ -20,8 +20,8 @@ import ConfirmationDialog from "../modals/ConfirmationDialog";
 
 const TransactionForm = () => {
   const [receiptNumber, setReceiptNumber] = useState('')
-  const [amount, setAmount] = useState()
-  const [clientName, setClientName] = useState()
+  const [amount, setAmount] = useState('')
+  const [clientName, setClientName] = useState('')
 
   const [transaction, setTransaction] = useState()
   const [openPrintForm, setOpenPrintFrom] = useState(false)
@@ -48,13 +48,13 @@ const TransactionForm = () => {
       electronic_trans_type: isElectronic ? selectedTransactionOption.label : '-'
     }
 
-    console.log(JSON.stringify(postData))
+    // console.log(JSON.stringify(postData))
     userRequest.post('/add_receipt', postData)
       .then((res) => {
         let freshTrans = res.data
-        console.log(freshTrans)
+        // console.log(freshTrans)
         setTransaction(res.data.receipt)
-        console.log(res.data.receipt)
+        // console.log(res.data.receipt)
         setClientName('')
         setAmount('')
         setIsElectronic(false)
@@ -63,7 +63,7 @@ const TransactionForm = () => {
       }
       )
       .catch((error) => {
-        console.log(error)
+        // console.log(error)
         setMessage('New transaction failed')
         setShowConfirmation(true)
 
@@ -78,7 +78,7 @@ const TransactionForm = () => {
   const handleSelectChange = (event) => {
     event.preventDefault()
     setSelectedTransactionOption(event.target.value);
-    console.log(selectedTransactionOption)
+    // console.log(selectedTransactionOption)
   };
   const colourStyles = {
     option: (styles, { data, isDisabled, isFocused, isSelected }) => {
@@ -110,6 +110,7 @@ const TransactionForm = () => {
               onChange={(e) => setAmount(e.target.value)}
               size="small"
               required
+              value={amount}
             />
             <Controls.Input
               name="clientName"
@@ -117,6 +118,7 @@ const TransactionForm = () => {
               onChange={(e) => setClientName(e.target.value)}
               size="small"
               required
+              value={clientName}
             />
             {
               isElectronic ?

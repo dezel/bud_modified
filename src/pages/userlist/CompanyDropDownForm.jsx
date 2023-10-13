@@ -32,12 +32,12 @@ function CompanyDropDownForm() {
             });
     };
 
-    const handleOnChange = (e) => {
-        setSelectedOption(e.target.value)
-        console.log(e.target.value)
-    }
+    // const handleOnChange = (e) => {
+    //     setSelectedOption(e.target.value)
+    //     console.log(e.target.value)
+    // }
 
-    console.log(selectedOption)
+    // console.log(selectedOption)
 
 
     const loadBranchesOptions = (selectedOption) => {

@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./usersform.scss";
 import { Grid } from "@mui/material";
 import { Form } from "../../components/useForm";
-import Controls from "./../../components/controls/Controls";
+import Controls from "../../components/controls/Controls";
 
 
 import Select from 'react-select'
@@ -15,12 +15,12 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import { tryParse } from "../../utils/tryParse";
 
 
-const UsersForm = () => {
+const UsersFormEdit = ({ user }) => {
   // const [selectedOption, setSelectedOption] = useState(null);
+  console.log(user)
 
-
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
+  const [firstName, setFirstName] = useState(user.first_name)
+  const [lastName, setLastName] = useState(user.last_name)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -28,18 +28,19 @@ const UsersForm = () => {
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [message, setMessage] = useState('')
 
-  const [isSuperUser, setIsSuperUser] = useState(false)
-  const [isActive, setIsactive] = useState(true)
+  const [isSuperUser, setIsSuperUser] = useState(user.is_supervuser)
+  const [isActive, setIsactive] = useState(user.is_active)
   const [entity, setEntity] = useState()
   const [subEntity, setSubEntity] = useState()
   const [branches, setBranches] = useState()
+  const [companyName, setCompanyName] = useState('')
 
   const branchLookup = (entityId) => {
 
     // console.log()
 
     const entities = tryParse(localStorage.getItem('branches'))
-
+    console.log(entities)
     const branchFor = entities.filter(entity => entity.fields.entity === entityId)
 
     // console.log(branchFor)
@@ -77,37 +78,37 @@ const UsersForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (password !== confirmPassword){
-      setMessage("Passwords do not match")
-      setShowConfirmation(true)
-      return
-    }
-    
-    if(!isSuperUser && !entity && !subEntity){
-      setMessage("Please confirm company and branch")
-      setShowConfirmation(true)
-      return
-    }
+    // if (password !== confirmPassword){
+    //   setMessage("Passwords do not match")
+    //   setShowConfirmation(true)
+    //   return
+    // }
 
-    let passwordRegex =/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d{1,})(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+    // if(!isSuperUser && !entity && !subEntity){
+    //   setMessage("Please confirm company and branch")
+    //   setShowConfirmation(true)
+    //   return
+    // }
 
-    if (!password.match(passwordRegex)){
-      // setMessage("Minimum eight and maximum 10 characters, at least one uppercase letter, one lowercase letter, one number and one special character")
-      setMessage("Password does not meet the minimum password requirement.")
-      setShowConfirmation(true)
-      return
-    }
+    // let passwordRegex =/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d{1,})(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+
+    // if (!password.match(passwordRegex)){
+    //   // setMessage("Minimum eight and maximum 10 characters, at least one uppercase letter, one lowercase letter, one number and one special character")
+    //   setMessage("Password does not meet the minimum password requirement.")
+    //   setShowConfirmation(true)
+    //   return
+    // }
 
     const postData = {
       first_name: firstName,
       last_name: lastName,
-      password: password,
-      username: username,
+      // password: password,
+      // username: username,
       is_superuser: isSuperUser,
       is_active: isActive,
       person: {
-        entity: isSuperUser?1: entity,
-        sub_entity: isSuperUser?1:subEntity
+        entity: isSuperUser ? 1 : entity,
+        sub_entity: isSuperUser ? 1 : subEntity
       }
     }
 
@@ -127,10 +128,11 @@ const UsersForm = () => {
         setIsactive(false)
 
       })
-      .catch((err) => {console.log(err.response.data.username[0])
-      setMessage(err.response.data.username[0])
+      .catch((err) => {
+        console.log(err.response.data.username[0])
+        setMessage(err.response.data.username[0])
 
-      setShowConfirmation(true)
+        setShowConfirmation(true)
       })
   };
 
@@ -153,6 +155,40 @@ const UsersForm = () => {
   }
 
 
+
+  const defaultCompany = () => {
+    console.log(user)
+    const companyId = user.person.entity
+
+    let companies = tryParse(localStorage.getItem('companies'))
+    // console.log(companies)
+    let userCompany = companies.filter(company => company.id === companyId)
+    console.log(userCompany)
+
+   
+    return {
+      value: userCompany[0].id,
+      label: userCompany[0].name
+    }
+
+  }
+
+
+  const defaultBranch =() =>{
+    const branchId = user.person.sub_entity
+    console.log(branchId)
+    let branches = tryParse(localStorage.getItem('branches'))
+    console.log(branches)
+    // console.log(branches)
+    let userBranch = branches.filter(branch=>branch.pk === branchId)
+    
+    console.log(userBranch)
+
+    return {
+      value: userBranch[0].pk,
+      label: userBranch[0].fields.branch_name
+    }
+  }
   return (
     <Form onSubmit={handleSubmit}>
       <div className="form-wrapper">
@@ -174,15 +210,15 @@ const UsersForm = () => {
             size="small"
             value={lastName}
           />
-          <Controls.Input
+          {/* <Controls.Input
             name="username"
             label="Username"
             required
             onChange={(e) => setUsername(e.target.value)}
             size="small"
             value={username}
-          />
-          <Controls.Input
+          /> */}
+          {/* <Controls.Input
             name="password"
             label="Password"
             type="password"
@@ -199,7 +235,7 @@ const UsersForm = () => {
             size="small"
             onChange={(e) => setConfirmPassword(e.target.value)}
             value={confirmPassword}
-          />
+          /> */}
           <FormControlLabel
             control={<Checkbox checked={isSuperUser} onChange={(e) => setIsSuperUser(e.target.checked)} />}
             label="Is administrator"
@@ -213,7 +249,7 @@ const UsersForm = () => {
               <>
 
                 <Select
-                  defaultValue={{ label: "Select Company", value: 0 }}
+                  defaultValue={defaultCompany()}
                   options={companyLookup()}
                   onChange={
                     (e) => {
@@ -224,7 +260,7 @@ const UsersForm = () => {
                 />
                 <div style={{ color: "white" }}>-</div>
                 <Select
-                  defaultValue={{ label: "Select Branch", value: 0 }}
+                  defaultValue={defaultBranch()}
                   options={branches}
                   onChange={(e) => setSubEntity(e.value)}
                   required
@@ -242,13 +278,13 @@ const UsersForm = () => {
               size="small"
             />
             {
-            showConfirmation && (
-              <ConfirmationDialog
-                message={message}
-                onConfirm={handleConfirm}
-                onCancel={handleCancel}
-              />
-            )}
+              showConfirmation && (
+                <ConfirmationDialog
+                  message={message}
+                  onConfirm={handleConfirm}
+                  onCancel={handleCancel}
+                />
+              )}
           </div>
         </Grid>
       </div>
@@ -256,4 +292,4 @@ const UsersForm = () => {
   );
 };
 
-export default UsersForm;
+export default UsersFormEdit;

@@ -8,6 +8,9 @@ import useTable from "./../../components/useTable";
 import Controls from "../../components/controls/Controls";
 import Popup from "../../modals/Popup";
 import Notification from "../../components/notifications/Notification";
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import UsersFormEdit from "./UsersFormEdit";
 import Accordion from "../home/Accordion";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -239,11 +242,19 @@ const UserList = () => {
                       <StyledTableCell>{user.last_name}</StyledTableCell>
                       <StyledTableCell>{user.username}</StyledTableCell>
                       <StyledTableCell>{user.id}</StyledTableCell>
-                      <StyledTableCell>{user.is_active}</StyledTableCell>
+                      <StyledTableCell><FormControlLabel
+                        control={<Checkbox checked={user.is_active} />}
+                      />{user.is_active}</StyledTableCell>
                       <StyledTableCell>
                         <Controls.ActionButton
                           style={btnPrimary}
-                          onClick={() => setUserEdit(user)}
+                          onClick={
+                            () => 
+                            {
+                              setUserEdit(user)
+                              setOpenPopup(true)
+                            }
+                          }
                         >
                           <EditOutlined fontSize="small" />
                         </Controls.ActionButton>
@@ -251,9 +262,10 @@ const UserList = () => {
                           style={btnSecondary}
                         >
                           <div onClick={(e) => {
-                              setOpenReset(true)
-                              setTrans(user)
-                            }
+                            setOpenReset(true)
+                            console.log(user)
+                            setTrans(user)
+                          }
                           } >Reset</div>
                           {/* <CloseIcon fontSize="small" /> */}
                         </Controls.ActionButton>
@@ -270,7 +282,7 @@ const UserList = () => {
             openPopup={openPopup}
             setOpenPopup={setOpenPopup}
           >
-            <UsersForm user={userForEdit} />
+            <UsersFormEdit user={userEdit} />
           </Popup>
           <Popup
             title="Reset password"

@@ -50,6 +50,7 @@ import { useStateManager } from "react-select";
 import Papa from "papaparse";
 import PrintReceiptForm from "./PrintReceiptFrom";
 import ConfirmationDialog from "../modals/ConfirmationDialog";
+import { defaultBranch, defaultCompany } from "../utils/lookups";
 
 // // IMPORT INITIAL FORM VALUE
 // import { initialFValues } from "../../components/component-utils/initValues";
@@ -142,7 +143,7 @@ const TransactionList = () => {
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [message, setMessage] = useState('')
-
+  const [reason, setReason] = useState('')
 
 
   // NOTIFICATION
@@ -243,7 +244,9 @@ const TransactionList = () => {
           transaction_date: dayjs(transaction.transaction_date),
           client_name: transaction.client_name,
           payment_method: transaction.payment_method,
-          electronic_trans_type: transaction.electronic_trans_type
+          electronic_trans_type: transaction.electronic_trans_type,
+          company_name: defaultCompany(transaction.entity).label,
+          branch: defaultBranch(transaction.sub_entity).label
         })
         )
 
@@ -274,14 +277,14 @@ const TransactionList = () => {
   }
 
   const handleDelete = (transaction) => {
-
+ console.log(userData)
 
     if (confirmDelete) {
 
-      userRequest.delete(`/delete_receipt/${transaction.id}`)
+      userRequest.post(`/delete_receipt/${transaction.id}`,{username:userData.user.username})
         .then((res) => {
-          console.log(res)
-          console.log('transaction deleted successfully')
+          // console.log(res)
+          // console.log('transaction deleted successfully')
           setMessage('transaction deleted successfully')
           setShowConfirmation(false)
         })
@@ -292,8 +295,8 @@ const TransactionList = () => {
     setShowConfirmation(false)
   }
   const handleConfirm = () => {
-    console.log('confirmed')
-    setMessage('Are you sure you want to delete this transaction? ')
+    // console.log('confirmed')
+    setMessage(`Are you sure you want to delete this transaction?`)
     setShowConfirmation(true)
     setConfirmDelete(true)
 
@@ -427,7 +430,8 @@ const TransactionList = () => {
               onConfirm={(e) => handleDelete(trans)}
               onCancel={(e) => handleCancel()}
               showCancel={true}
-            />}
+              addMessage={true}
+            ></ConfirmationDialog>}
           <Notification notify={notify} setNotify={setNotify} />
         </div>
       </div>

@@ -24,7 +24,7 @@ const AddBranch = () => {
 
         }
 
-        console.log(postData)
+        // console.log(postData)
         userRequest.post('/add_subentity', postData)
             .then((res) => {
 
@@ -32,10 +32,10 @@ const AddBranch = () => {
                 setShowConfirmation(true)
                 setBranchName('')
                 setLocation('')
-                console.log(res)
+                // console.log(res)
             })
             .catch((err) => {
-                console.log(err)
+                // console.log(err)
             })
     }
 

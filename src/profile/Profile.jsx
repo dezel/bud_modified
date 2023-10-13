@@ -30,6 +30,7 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import { publicRequest, userRequest } from "../utils/requestMethod";
+import ConfirmationDialog from "../modals/ConfirmationDialog";
 
 // // IMPORT INITIAL FORM VALUE
 // import { initialFValues } from "../../components/component-utils/initValues";
@@ -70,6 +71,10 @@ const Profile = () => {
   const [oldPassword, setOldPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [showConfirmation, setShowConfirmation] = useState(false)
+  const [message, setMessage] = useState('')
+  const [username, setUsername] = useState('')
+
   // GET USERS DATA
   const [transactions, setTransactions] = useState([]);
   const [filterFn, setFilterFn] = useState({
@@ -89,8 +94,24 @@ const Profile = () => {
   const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
+    // console.log('reached')
     const userInfo = tryParse(localStorage.getItem('userData'))
     // console.log(userInfo)
+
+    let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$/
+
+    if (!newPassword.match(passwordRegex)) {
+      // setMessage("Minimum eight and maximum 10 characters, at least one uppercase letter, one lowercase letter, one number and one special character")
+      setMessage("Password does not meet the minimum password requirement.")
+      setShowConfirmation(true)
+      // console.log('print regex')
+      return
+    }
+
+    if (newPassword !== confirmPassword) {
+      setMessage("Passwords do not match")
+      setShowConfirmation(true)
+    }
 
 
 
@@ -102,7 +123,7 @@ const Profile = () => {
 
 
     userRequest.post('/change_password', postData)
-      .then(()=>{
+      .then(() => {
         alert("Password changed successfully. Please log in again")
         navigate('/login')
       })
@@ -150,6 +171,9 @@ const Profile = () => {
     // console.log(recordForEdit);
   };
 
+  const handleCancel =()=>{
+    setShowConfirmation(false)
+  }
 
   return (
     <div className="userlist">
@@ -216,9 +240,14 @@ const Profile = () => {
                     />
                   </div>
                 </Grid>
-              </div>
+              </div> 
+              {showConfirmation &&
+            (<ConfirmationDialog message={message} onConfirm={handleCancel} />)
+          }
+
             </Form>
           </Popup>
+         
           <Notification notify={notify} setNotify={setNotify} />
         </div>
       </div>

@@ -24,6 +24,22 @@ const TransactionForma = () => {
     const userInfo = tryParse( localStorage.getItem('userData'))
     // console.log(userInfo)
 
+
+    let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$/
+
+    if (!password.match(passwordRegex)) {
+        // setMessage("Minimum eight and maximum 10 characters, at least one uppercase letter, one lowercase letter, one number and one special character")
+        setMessage("Password does not meet the minimum password requirement.")
+        setShowConfirmation(true)
+        return
+    }
+
+    if (password !== confirmPassword) {
+        setMessage("Passwords do not match")
+        setShowConfirmation(true)
+    }
+
+
     const postData = {
       amount:parseFloat(amount),
       client_name: clientName,
@@ -78,6 +94,7 @@ const TransactionForma = () => {
               color="secondary"
               size="small"
             />
+            <button>name</button>
           </div>
         </Grid>
       </div>

@@ -17,7 +17,7 @@ try {
 export const publicRequest = axios.create({
   baseURL: BASE_URL,
 });
-console.log(TOKEN)
+// console.log(TOKEN)
 export const userRequest = axios.create({
   baseURL: BASE_URL,
   headers: { authorization: `token ${TOKEN}` },

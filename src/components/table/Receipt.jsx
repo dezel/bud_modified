@@ -6,7 +6,7 @@ function GetReceipt() {
     const [error, setError] = useState('');
 
     
-    console.log(receipt)
+    // console.log(receipt)
 
     return (
         receipt

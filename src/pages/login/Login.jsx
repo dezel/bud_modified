@@ -34,8 +34,9 @@ const Login = ({ setLoginInfo }) => {
 
       navigate('/home')
     } catch (err) {
-      // console.log(err.response.data);
+      // console.log(err);
       setLoginError('Username or password incorrect')
+      // setLoginError(err.response.data.detail)
     }
   };
 

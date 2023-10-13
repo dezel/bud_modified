@@ -19,9 +19,10 @@ const Sidebar = () => {
   const navigate = useNavigate()
   const handleLogout = (e) => {
     e.preventDefault();
-    localStorage.removeItem('userData')
-    localStorage.removeItem('companies')
-    localStorage.removeItem('branches')
+    // localStorage.removeItem('userData')
+    // localStorage.removeItem('companies')
+    // localStorage.removeItem('branches')
+    localStorage.clear()
     navigate('/login')
 
   }

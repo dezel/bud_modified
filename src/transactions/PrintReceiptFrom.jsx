@@ -9,10 +9,11 @@ import React, { useRef } from 'react';
 import ReactToPrint from 'react-to-print';
 import { tryParse } from "../utils/tryParse"
 import dayjs from "dayjs"
+import { defaultBranch, defaultCompany } from "../utils/lookups"
 // import RBLLogo from '/src/RBLg.ico'
 // import JustPrint from './JustPrint'
 const PrintReceiptForm = ({ transaction }) => {
-
+  console.log(transaction)
   const user = tryParse(localStorage.getItem('userData'))
   const componentRef = useRef();
   return (
@@ -31,7 +32,7 @@ const PrintReceiptForm = ({ transaction }) => {
           <div >
             <div className="centre">
               {/* <img src='/RBLg.ico'></img><h3  >Republic Bank</h3> */}
-              <img style={{width:300, height:80}} src='/RBLogo.png'></img>
+              <img style={{width:300, height:80}} src='/im2.png'></img>
               <h4 className="centre"><strong>Transaction Details</strong></h4>
             </div>
 
@@ -76,7 +77,9 @@ const PrintReceiptForm = ({ transaction }) => {
                 </tr>
               </tbody>
             </table>
-          </div>
+           </div> 
+           <h4 className="centre">{defaultCompany(transaction.entity).label}, {defaultBranch(transaction.sub_entity).label}</h4>
+          
         </div>
       </div>
       <ReactToPrint
