@@ -263,6 +263,7 @@ const UsersFormEdit = ({ user }) => {
                   defaultValue={defaultBranch()}
                   options={branches}
                   onChange={(e) => setSubEntity(e.value)}
+                  value={defaultBranch()}
                   required
                 />
               </> : <></>

@@ -6,6 +6,8 @@ import { tryParse } from "../utils/tryParse";
 import { useForm, Form } from "../components/useForm";
 import { Grid } from "@mui/material";
 import Select from 'react-select'
+// import './addBranchFrom.scss'
+import './addBranchForm.scss'
 
 const AddBranch = () => {
 
@@ -43,9 +45,6 @@ const AddBranch = () => {
     const companyLookup = () => {
 
         let companies = tryParse(localStorage.getItem('companies'))
-
-
-
         return companies.map(
             company => {
                 return {
@@ -65,6 +64,18 @@ const AddBranch = () => {
         // branchLookup(e.value)
     }
 
+    const colourStyles = {
+        option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+          // const color = chroma(data.color);
+          console.log({ data, isDisabled, isFocused, isSelected });
+          return {
+            ...styles,
+            backgroundColor: isFocused ? "#999999" : null,
+            color: "#333333"
+          };
+        }
+      };
+      
 
     return (
         <>
@@ -74,14 +85,16 @@ const AddBranch = () => {
                         <Select
                             defaultValue={{ label: "Select Company", value: 0 }}
                             options={companyLookup()}
-                            onChange={
-                                (e) => {
-                                    setEntity(e.value)
-                                }
-                            }
-                            size="small"
-
+                            onChange={(e) => {setEntity(e.value)}}
+                            required
+                            styles={colourStyles}
                         />
+                        {/* <Select
+                  defaultValue={{ label: "Select Branch", value: 0 }}
+                  options={[{label:"try", value:1}, {label:"try 2", value:2}]}
+
+                  required
+                /> */}
                         <Controls.Input
                             name="branchName"
                             label="Branch Name"

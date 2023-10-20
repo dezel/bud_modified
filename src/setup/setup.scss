@@ -63,3 +63,28 @@
     
 
 }
+
+.form-wrapper{
+    width:100%;
+    display: flex;
+    // flex-wrap: wrap;
+    box-sizing: border-box;
+
+
+    // For Form
+    .MuiTextField-root, .MuiFormControl-root{
+       margin : 12px 30px;
+       display: flex;
+       flex-direction: column;
+       width: 250px;
+
+    }
+    .button-group{
+     margin-left: 30px;
+
+     .button{
+        margin-right: 5px;
+     }
+    }
+    
+}

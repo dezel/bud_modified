@@ -80,15 +80,15 @@ const UserList = () => {
   const [usernameEdit, setUsernameEdit] = useState('')
   const [userEdit, setUserEdit] = useState()
   const [trans, setTrans] = useState()
+  
 
 
-
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
 
     let queryString = {
       search_string: e.target.value
     }
-    userRequest.post('/get_users', queryString)
+   await userRequest.post('/get_users', queryString)
       .then((res) => {
         console.log(res.data)
         setReturnedUsers(res.data)
@@ -130,6 +130,8 @@ const UserList = () => {
   // POP UP MODAL
   const [openPopup, setOpenPopup] = useState(false);
   const [openReset, setOpenReset] = useState(false)
+  const [openEditPopup, setOpenEditPopup] = useState(false)
+
   // SET RECORDS FOR EDIT
   const [recordForEdit, setRecordForEdit] = useState(null);
 
@@ -217,7 +219,15 @@ const UserList = () => {
                   ),
                 }}
                 onChange={(e) => handleSearch(e)}
+                // onChange={(e) => setSearchString(e.target.value)}
               />
+              {/* <button
+              onClick={() => {
+                  handleSearch(searchString);
+                  // setRecordForEdit(null);
+                }}>Search
+                </button> */}
+              
               <Controls.Button
                 text="Add New"
                 variant="outlined"
@@ -226,7 +236,7 @@ const UserList = () => {
                 className="add-button"
                 onClick={() => {
                   setOpenPopup(true);
-                  setRecordForEdit(null);
+                  // setRecordForEdit(null);
                 }}
               />
             </Toolbar>
@@ -252,7 +262,7 @@ const UserList = () => {
                             () => 
                             {
                               setUserEdit(user)
-                              setOpenPopup(true)
+                              setOpenEditPopup(true)
                             }
                           }
                         >
@@ -278,11 +288,18 @@ const UserList = () => {
 
           </div>
           <Popup
-            title="Users Form"
+            title="Edit User"
+            openPopup={openEditPopup}
+            setOpenPopup={setOpenEditPopup}
+          >
+            <UsersFormEdit user={userEdit} />
+          </Popup>
+          <Popup
+            title="Add User Form"
             openPopup={openPopup}
             setOpenPopup={setOpenPopup}
           >
-            <UsersFormEdit user={userEdit} />
+            <UsersForm />
           </Popup>
           <Popup
             title="Reset password"

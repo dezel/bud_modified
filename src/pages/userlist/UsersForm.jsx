@@ -216,9 +216,7 @@ const UsersForm = () => {
                   defaultValue={{ label: "Select Company", value: 0 }}
                   options={companyLookup()}
                   onChange={
-                    (e) => {
-                      handleCompanyChange(e)
-                    }
+                    (e) => {handleCompanyChange(e)}
                   }
                   required
                 />
