@@ -21,6 +21,7 @@ import ProtectedRoutes from "./utils/ProtectedRoute";
 import TransactionList from "./transactions/TransactionList";
 import Profile from "./profile/Profile";
 import Setup from "./setup/Setup"
+import DonationList from "./donations/DonationList";
 function App() {
   // let userInfo
 
@@ -115,6 +116,7 @@ function App() {
             <Route path="/users" element={<UserList />} />
             <Route path="/setup" element={<Setup />} />
             <Route path="/transactions" element={<TransactionList />} />
+            <Route path="/funeralDonation" element={<DonationList />} />
             <Route path="/profile" element={<Profile />} />
 
             {/* Catch */}
@@ -122,7 +124,6 @@ function App() {
           </Routes>
         </Router>
       </div>
-
   );
 }
 

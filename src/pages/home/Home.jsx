@@ -10,6 +10,9 @@ import { userRequest } from "../../utils/requestMethod";
 import { Navigate } from "react-router-dom";
 import { tryParse } from "../../utils/tryParse";
 import dayjs from "dayjs";
+import { Summarize } from "@mui/icons-material";
+import { UpdateTransactions } from "./UpdateTransaction";
+import Calculate from "./Calculate";
 // import { dateCalendarClasses } from "@mui/x-date-pickers-pro";
 // import { set } from "date-fns";
 // import { ConstructionOutlined } from "@mui/icons-material";
@@ -22,7 +25,9 @@ const Home = () => {
   // const [user, setUser] = useState([])
   const [company, setCompany] = useState({})
   const [transactions, setTransactions] = useState([])
-
+  const [donations, setDonations] = useState([])
+  const [total, setTotal] = useState(0)
+  const [totalDonation, setTotalDonation] = useState(0)
   // let currentDateTime = new Date()
 
   // let currentDate = `${currentDateTime.getFullYear()}-${currentDateTime.getMonth() + 1}-${currentDateTime.getDate()}`
@@ -36,31 +41,71 @@ const Home = () => {
     }
   }
 
+  // const refresh = () => {
+  //   if (transactions) {
+
+
+  //     let sum = 0
+  //     for (var i = 0; i < transactions.length; i++) {
+  //       // console.log(transactions[i].amount)
+  //       sum += parseFloat(transactions[i].amount)
+  //     }
+  //     // console.log(sum)
+  //     setAmount(sum)
+  //   }
+  // }
+
   const refresh = () => {
     if (transactions) {
-
-
       let sum = 0
+      setTotal(0)
+      // let sum = 0
       for (var i = 0; i < transactions.length; i++) {
         // console.log(transactions[i].amount)
         sum += parseFloat(transactions[i].amount)
+        // setTotal(total+parseFloat(transactions[i].amount))
       }
       // console.log(sum)
-      setAmount(sum)
+      // setAmount(sum)
+      // console.log(total)
+      setTotal(sum)
+      console.log(sum)
+    }
+
+    if (donations) {
+      let sum = 0
+      setTotalDonation(0)
+      for (var i = 0; i < donations.length; i++) {
+        sum += parseFloat(donations[i].amount)
+      }
+  
+      setTotalDonation(sum)
+      console.log(sum)
     }
   }
+
 
   // console.log(queryData)
   const getTransactions = async () => {
     await userRequest.post('/get_receipts', queryData)
       .then(res => {
         setTransactions(res.data)
+        console.log(res.data)
         refresh()
-
       })
       .then(
         getCompany()
       )
+  }
+
+
+  const getDonations = async () => {
+    await userRequest.post('/get_donations', queryData)
+      .then(res => {
+        setDonations(res.data)
+        console.log(res.data)
+        refresh()
+      })
   }
 
   const getCompany = async () => {
@@ -76,9 +121,7 @@ const Home = () => {
   const getSubEntities = async () => {
     await (userRequest.get('/entities_subs'))
       .then((res) => {
-
         localStorage.setItem('branches', res.data)
-
       })
   }
 
@@ -91,13 +134,49 @@ const Home = () => {
       )
   }
 
+  const [sum, setSum] = useState(0)
 
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     console.log(transactions.length)
+  //     let initVal = 0
+  //     // const total = transactions.reduce((accum, curVal) => accum + parseFloat(curVal.amount), 0)
+
+  //     let total = 0
+  //     transactions.forEach(item => {
+  //       total += item.amount
+  //     })
+
+  //     console.log(total)
+  //     setSum(total)
+  //     console.log(sum)
+  //   }, 3000)
+  //   return () => clearInterval(interval)
+  // }, [])
+
+
+
+  const [counter, setCounter] = useState(1)
   // const [companyOptions, setCompanyOptions] = useState()
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setCounter(previusCount => previusCount + 1)
+  //     const total = transactions.reduce((accum, curVal) => accum + parseFloat(curVal.amount), 0)
+
+  //     console.log(counter)
+  //     console.log(total)
+  //     refresh()
+  //   }, 3000);
+  //   return () => clearInterval(interval)
+
+  // }, [])
 
   useEffect(() => {
     getTransactions()
     getSubEntities()
     getEntities()
+    getDonations()
+    refresh()
     // setCompanyOptions(localStorage.getItem('companies'))
   }, [])
 
@@ -108,15 +187,15 @@ const Home = () => {
   }
   return (
     <div className="home">
+      {/* <Calculate transactions={transactions} /> */}
       <Sidebar />
       <div className="homeContainer">
-
         <Navbar company={company} user={userData} />
         <div className="widgets">
           {/* <Widget type="user" />
           <Widget type="order" /> */}
-          <Widget type="collections" amount={amount} />
-
+          <Widget type="collections" amount={total} />
+          <Widget type="donations" amount={totalDonation} />
           <button onClick={(e) => {
             getTransactions()
             getEntities()

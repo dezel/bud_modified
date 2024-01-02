@@ -56,7 +56,20 @@ const Widget = ({ type, amount }) => {
           />
         ),
       };
-
+      break;
+      case "donations":
+        data = {
+          title: "Donations",
+          isMoney: true,
+          // link: "View net earnings",
+          icon: (
+            <MonetizationOnOutlinedIcon
+              className="icon"
+              style={{ color: "green", backgroundColor: "rgba(0,128,0,0.2" }}
+            />
+          ),
+        };
+  
       break;
     case "balance":
       data = {

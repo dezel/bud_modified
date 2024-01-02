@@ -57,7 +57,6 @@ const Navbar = () => {
         <div className="item">
           <Welcome 
           user={userData.user}
-          
           />
         </div>
       </div>

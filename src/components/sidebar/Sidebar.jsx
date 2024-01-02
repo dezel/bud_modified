@@ -62,12 +62,12 @@ const Sidebar = () => {
               <span className="dashboard">Transactions</span>
             </li>
           </Link>
-          {/* <Link to="/funeralDnation" style={{ textDecoration: "none" }}>
+          <Link to="/funeralDonation" style={{ textDecoration: "none" }}>
             <li>
               <HomeWorkIcon className="icon" />
               <span className="dashboard">Funeral</span>
             </li>
-          </Link> */}
+          </Link>
           {/* <Link to="/branchdept" style={{ textDecoration: "none" }}>
             <li>
               <HomeWorkIcon className="icon" />

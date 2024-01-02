@@ -13,12 +13,14 @@ import Popup from "../modals/Popup";
 import { useState } from "react";
 import AddCompany from "./AddCompany";
 import AddBranch from "./AddBranch";
+import AddFuneral from "./AddFuneral"
+
 import { tryParse } from "../utils/tryParse";
 
 const Setup = () => {
   const [openCompanyPopup, setOpenCompanyPopup] = useState(false)
   const [openBranchPopup, setOpenBranchPopup] = useState(false)
-
+  const [openFuneralPopup, setOpenFuneralPopup] = useState(false)
 
 
 
@@ -55,6 +57,16 @@ const Setup = () => {
               setOpenBranchPopup(true);
             }}
           />
+                    <Controls.Button
+            text="Add Funeral"
+            variant="outlined"
+            startIcon={<AddIcon />}
+            size="small"
+            className="add-button"
+            onClick={() => {
+              setOpenFuneralPopup(true);
+            }}
+          />
           <Popup
             title="Add Company"
             openPopup={openCompanyPopup}
@@ -62,13 +74,21 @@ const Setup = () => {
           >
             <AddCompany />
           </Popup>
-          
+
           <Popup
             title="Add Branch"
             openPopup={openBranchPopup}
             setOpenPopup={setOpenBranchPopup}
           >
             <AddBranch />
+          </Popup>
+
+          <Popup
+            title="Add Funeral"
+            openPopup={openFuneralPopup}
+            setOpenPopup={setOpenFuneralPopup}
+          >
+            <AddFuneral />
           </Popup>
         </div>
       </div>

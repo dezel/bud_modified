@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "./transactionform.scss";
+import "./donationForm.scss";
 import { Grid } from "@mui/material";
 import { useForm, Form } from "../components/useForm";
 import Controls from "../components/controls/Controls";
@@ -17,9 +17,8 @@ import FormControl from '@mui/material/FormControl';
 // import Select from '@mui/material/Select';
 import reactSelect from "react-select";
 import ConfirmationDialog from "../modals/ConfirmationDialog";
-import { UpdateTransactions } from "../pages/home/UpdateTransaction";
 
-const TransactionForm = () => {
+const DonationForm = () => {
   const [receiptNumber, setReceiptNumber] = useState('')
   const [amount, setAmount] = useState('')
   const [clientName, setClientName] = useState('')
@@ -41,27 +40,26 @@ const TransactionForm = () => {
     const postData = {
       amount: parseFloat(amount),
       client_name: clientName,
-      entity: userInfo.user.person.entity,
-      sub_entity: userInfo.user.person.sub_entity,
-      receipt_number: receiptNumber ? receiptNumber : '-',
+      funeral: 1,
+      // sub_entity: userInfo.user.person.sub_entity,
+      // receipt_number: receiptNumber ? receiptNumber : '-',
       person: userInfo.user.id,
       payment_method: isElectronic ? "Electronic" : "Cash",
       electronic_trans_type: isElectronic ? selectedTransactionOption.label : '-'
     }
 
-    // console.log(JSON.stringify(postData))
-    userRequest.post('/add_receipt', postData)
+    console.log(JSON.stringify(postData))
+    userRequest.post('/add_funeral_donation', postData)
       .then((res) => {
         let freshTrans = res.data
         // console.log(freshTrans)
-        setTransaction(res.data.receipt)
-        // console.log(res.data.receipt)
+        setTransaction(res.data.response)
+        console.log(res.data.response)
         setClientName('')
         setAmount('')
         setIsElectronic(false)
         setReceiptNumber('')
         setOpenPrintFrom(true)
-        UpdateTransactions()
       }
       )
       .catch((error) => {
@@ -173,4 +171,4 @@ const TransactionForm = () => {
   );
 };
 
-export default TransactionForm;
+export default DonationForm;
