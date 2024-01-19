@@ -190,7 +190,7 @@ const TransactionList = () => {
 
 
   const handleSearch = () => {
-    console.log(searchQuery)
+//console.log(searchQuery)
     userRequest.post('/get_receipts', searchQuery)
       .then((res) => setTransactions(res.data))
   }
@@ -213,7 +213,7 @@ const TransactionList = () => {
   const colourStyles = {
     option: (styles, { data, isDisabled, isFocused, isSelected }) => {
       // const color = chroma(data.color);
-      console.log({ data, isDisabled, isFocused, isSelected });
+//console.log({ data, isDisabled, isFocused, isSelected });
       return {
         ...styles,
         backgroundColor: isFocused ? "#999999" : null,
@@ -251,7 +251,7 @@ const TransactionList = () => {
         )
 
 
-      console.log(transactions)
+//console.log(transactions)
       // const dataForExport 
       // data.map(({id, deviceName}) => ({id, deviceName})
       let trans = transactions.map((element) => (
@@ -277,7 +277,7 @@ const TransactionList = () => {
   }
 
   const handleDelete = (transaction) => {
- console.log(userData)
+//console.log(userData)
 
     if (confirmDelete) {
 

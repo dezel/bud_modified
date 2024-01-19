@@ -13,7 +13,7 @@ import { defaultBranch, defaultCompany } from "../utils/lookups"
 // import RBLLogo from '/src/RBLg.ico'
 // import JustPrint from './JustPrint'
 const PrintReceiptForm = ({ transaction }) => {
-  console.log(transaction)
+//console.log(transaction)
   const user = tryParse(localStorage.getItem('userData'))
   const componentRef = useRef();
   return (

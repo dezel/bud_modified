@@ -90,7 +90,7 @@ const UserList = () => {
     }
    await userRequest.post('/get_users', queryString)
       .then((res) => {
-        console.log(res.data)
+//console.log(res.data)
         setReturnedUsers(res.data)
       })
   }
@@ -273,7 +273,7 @@ const UserList = () => {
                         >
                           <div onClick={(e) => {
                             setOpenReset(true)
-                            console.log(user)
+//console.log(user)
                             setTrans(user)
                           }
                           } >Reset</div>

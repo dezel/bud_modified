@@ -24,7 +24,7 @@ export const getAllAccounts = async (dispatch) => {
     // console.log(res.data);
   } catch (err) {
     dispatch(getAccountsFailure());
-    console.log(err);
+//console.log(err);
   }
 };
 
@@ -54,7 +54,7 @@ export const createNewAccount = async (dispatch, account) => {
     // console.log({ ...user, id: res.data.recordset[0].insert_id });
   } catch (err) {
     dispatch(addAccountFailure());
-    console.log(err);
+//console.log(err);
   }
 };
 
@@ -65,7 +65,7 @@ export const updateAccount = async (dispatch, id, account) => {
 
     dispatch(updateAccountSuccess({ id, account }));
   } catch (err) {
-    console.log("Error", err);
+//console.log("Error", err);
     dispatch(updateAccountFailure());
   }
 };
@@ -75,7 +75,7 @@ export const deleteAccount = async (dispatch, id) => {
     await userRequest.delete(`/accounts/deleteaccount/${id}`);
     dispatch(deleteAccountSuccess(id));
   } catch (err) {
-    console.log("Error", err);
+//console.log("Error", err);
     dispatch(deleteAccountFailure());
   }
 };

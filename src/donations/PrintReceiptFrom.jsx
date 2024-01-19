@@ -15,7 +15,7 @@ import { publicRequest } from "../utils/requestMethod"
 // import RBLLogo from '/src/RBLg.ico'
 // import JustPrint from './JustPrint'
 const PrintReceiptForm = ({ transaction }) => {
-  console.log(transaction)
+//console.log(transaction)
   const user = tryParse(localStorage.getItem('userData'))
   const componentRef = useRef();
 
@@ -100,6 +100,16 @@ const PrintReceiptForm = ({ transaction }) => {
                   <td><span>Received from</span></td>
                   <td style={{ color: "white" }}><span>                :</span></td>
                   <td><span>{transaction.client_name}</span></td>
+                </tr>
+                <tr>
+                  <td><span>Phone</span></td>
+                  <td style={{ color: "white" }}><span>                :</span></td>
+                  <td><span>{transaction.phone}</span></td>
+                </tr>
+                <tr>
+                  <td><span>Received for</span></td>
+                  <td style={{ color: "white" }}><span>                :</span></td>
+                  <td><span>{transaction.beneficiary}</span></td>
                 </tr>
               </tbody>
             </table>

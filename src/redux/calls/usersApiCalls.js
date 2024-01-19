@@ -28,7 +28,7 @@ export const login = async (dispatch, user) => {
     localStorage.setItem("currentUser", JSON.stringify(res.data));
   } catch (error) {
     dispatch(loginFailure());
-    console.log(error);
+//console.log(error);
   }
 };
 
@@ -117,7 +117,7 @@ export const updateUser = async (dispatch, id, user) => {
 
     dispatch(updateUsersSuccess({ id, user }));
   } catch (err) {
-    console.log("Error", err);
+//console.log("Error", err);
     dispatch(updateUsersFailure());
   }
 };
@@ -127,7 +127,7 @@ export const deleteUser = async (dispatch, id) => {
     await userRequest.delete(`/users/removeuser/${id}`);
     dispatch(deleteUsersSuccess(id));
   } catch (err) {
-    console.log("Error", err);
+//console.log("Error", err);
     dispatch(deleteUsersFailure());
   }
 };

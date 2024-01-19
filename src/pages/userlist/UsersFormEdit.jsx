@@ -17,7 +17,7 @@ import { tryParse } from "../../utils/tryParse";
 
 const UsersFormEdit = ({ user }) => {
   // const [selectedOption, setSelectedOption] = useState(null);
-  console.log(user)
+//console.log(user)
 
   const [firstName, setFirstName] = useState(user.first_name)
   const [lastName, setLastName] = useState(user.last_name)
@@ -40,7 +40,7 @@ const UsersFormEdit = ({ user }) => {
     // console.log()
 
     const entities = tryParse(localStorage.getItem('branches'))
-    console.log(entities)
+//console.log(entities)
     const branchFor = entities.filter(entity => entity.fields.entity === entityId)
 
     // console.log(branchFor)
@@ -129,7 +129,7 @@ const UsersFormEdit = ({ user }) => {
 
       })
       .catch((err) => {
-        console.log(err.response.data.username[0])
+//console.log(err.response.data.username[0])
         setMessage(err.response.data.username[0])
 
         setShowConfirmation(true)
@@ -157,13 +157,13 @@ const UsersFormEdit = ({ user }) => {
 
 
   const defaultCompany = () => {
-    console.log(user)
+//console.log(user)
     const companyId = user.person.entity
 
     let companies = tryParse(localStorage.getItem('companies'))
     // console.log(companies)
     let userCompany = companies.filter(company => company.id === companyId)
-    console.log(userCompany)
+//console.log(userCompany)
 
    
     return {
@@ -176,13 +176,13 @@ const UsersFormEdit = ({ user }) => {
 
   const defaultBranch =() =>{
     const branchId = user.person.sub_entity
-    console.log(branchId)
+//console.log(branchId)
     let branches = tryParse(localStorage.getItem('branches'))
-    console.log(branches)
+//console.log(branches)
     // console.log(branches)
     let userBranch = branches.filter(branch=>branch.pk === branchId)
     
-    console.log(userBranch)
+//console.log(userBranch)
 
     return {
       value: userBranch[0].pk,

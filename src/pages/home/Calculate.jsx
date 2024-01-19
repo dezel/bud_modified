@@ -4,7 +4,7 @@ const Calculate = ({ transactions }) => {
   const [data, setData] = useState(
     transactions
   );
-  console.log(data)
+//console.log(data)
   const [sum, setSum] = useState(0);
   const [newTrans, setNewTrans] = useState()
 
@@ -12,13 +12,13 @@ const Calculate = ({ transactions }) => {
     const interval = setInterval(() => {
       let totalSum = 0;
 
-      console.log('run')
+//console.log('run')
       // Calculate the sum of the 'value' field in each object
       data.forEach(item => {
         totalSum += item.id;
       });
       // const total = transactions.reduce((accum, curVal) => accum + parseFloat(curVal.amount), 0)
-      console.log(transactions)
+//console.log(transactions)
       let total = 0.0
       transactions.forEach(item => {
         total += item.id;
@@ -26,7 +26,7 @@ const Calculate = ({ transactions }) => {
 
       // Update the sum state with the calculated total sum
       setSum(totalSum);
-      console.log(sum)
+//console.log(sum)
     }, 3000);
 
     // Clean up the interval on component unmount

@@ -24,7 +24,7 @@ export const getAllBranchDept = async (dispatch) => {
     // console.log(res.data);
   } catch (err) {
     dispatch(getBranchDeptFailure());
-    console.log(err);
+//console.log(err);
   }
 };
 
@@ -58,7 +58,7 @@ export const createNewBranchDept = async (dispatch, branchdept) => {
     // console.log({ ...user, id: res.data.recordset[0].insert_id });
   } catch (err) {
     dispatch(addBranchDeptFailure());
-    console.log(err);
+//console.log(err);
   }
 };
 
@@ -79,7 +79,7 @@ export const updateBranchDept = async (dispatch, id, branchdept) => {
 
     dispatch(updateBranchDeptSuccess({ id, branchdept }));
   } catch (err) {
-    console.log("Error", err);
+//console.log("Error", err);
     dispatch(updateBranchDeptFailure());
   }
 };
@@ -89,7 +89,7 @@ export const deleteBranchDept = async (dispatch, id) => {
     await userRequest.delete(`/branchdept/deletebranchdept/${id}`);
     dispatch(deleteBranchDeptSuccess(id));
   } catch (err) {
-    console.log("Error", err);
+//console.log("Error", err);
     dispatch(deleteBranchDeptFailure());
   }
 };

@@ -25,7 +25,7 @@ const AddCompany = () => {
                 setCompanyName('')
             })
             .catch((err) =>{
-                console.log(err)
+//console.log(err)
             })
     }
     const handleConfirm = () => {

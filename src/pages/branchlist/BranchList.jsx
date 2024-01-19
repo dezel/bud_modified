@@ -99,7 +99,7 @@ const BranchList = () => {
     try {
       getAllBranchDept(dispatch);
     } catch (err) {
-      console.log(err);
+//console.log(err);
     }
   }, [dispatch]);
 

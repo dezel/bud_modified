@@ -24,7 +24,7 @@ export const getAllBudgets = async (dispatch) => {
     // console.log(res.data);
   } catch (err) {
     dispatch(getBudgetsFailure());
-    console.log(err);
+//console.log(err);
   }
 };
 
@@ -54,7 +54,7 @@ export const createNewBudget = async (dispatch, budget) => {
     // console.log({ ...user, id: res.data.recordset[0].insert_id });
   } catch (err) {
     dispatch(addBudgetFailure());
-    console.log(err);
+//console.log(err);
   }
 };
 
@@ -65,7 +65,7 @@ export const updateBudget = async (dispatch, id, account) => {
 
     dispatch(updateBudgetSuccess({ id, account }));
   } catch (err) {
-    console.log("Error", err);
+//console.log("Error", err);
     dispatch(updateBudgetFailure());
   }
 };
@@ -75,7 +75,7 @@ export const deleteBudget = async (dispatch, id) => {
     await userRequest.delete(`/accounts/deletebudget/${id}`);
     dispatch(deleteBudgetSuccess(id));
   } catch (err) {
-    console.log("Error", err);
+//console.log("Error", err);
     dispatch(deleteBudgetFailure());
   }
 };

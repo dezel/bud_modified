@@ -28,7 +28,7 @@ function CompanyDropDownForm() {
             })
             .catch(error => {
                 const message = error.message;
-                console.error(message);
+//console.error(message);
             });
     };
 
@@ -54,7 +54,7 @@ function CompanyDropDownForm() {
             })
             .catch(error => {
                 const message = error.message;
-                console.error(message);
+//console.error(message);
             });
     }
     return (

@@ -95,7 +95,7 @@ const BudgetSetupList = () => {
     try {
       getAllAccounts(dispatch);
     } catch (err) {
-      console.log(err);
+//console.log(err);
     }
   }, [dispatch]);
 

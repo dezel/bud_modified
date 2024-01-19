@@ -7,7 +7,7 @@ export const defaultCompany = (id) => {
     let companies = tryParse(localStorage.getItem('companies'))
     // console.log(companies)
     let userCompany = companies.filter(company => company.id === companyId)
-    console.log(userCompany)
+//console.log(userCompany)
 
    
     return {
@@ -19,7 +19,7 @@ export const defaultCompany = (id) => {
 
   export   const defaultBranch =(id) =>{
     const branchId =  id//user.person.sub_entity
-    console.log(branchId)
+//console.log(branchId)
     let branches = tryParse(localStorage.getItem('branches'))
     // console.log(branches)
     let userBranch = branches.filter(branch=>branch.pk === branchId)

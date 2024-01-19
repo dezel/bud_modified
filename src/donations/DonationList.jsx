@@ -127,18 +127,18 @@ const DonationList = () => {
   }
 
 
-  const getFuneral= async () =>{
-    await(userRequest.get('/get_funeral'))
-    .then((res)=>{
-      localStorage.setItem('funeral', JSON.stringify(res.data))
-    })
+  const getFuneral = async () => {
+    await (userRequest.get('/get_funeral'))
+      .then((res) => {
+        localStorage.setItem('funeral', JSON.stringify(res.data))
+      })
   }
   useEffect(() => {
     // const data = getTransactions()
     // setTransactions(getTransactions())
 
     getFuneral()
-    
+
 
   }, [])
 
@@ -196,10 +196,11 @@ const DonationList = () => {
 
 
   const handleSearch = () => {
-    console.log(searchQuery)
+//console.log(searchQuery)
     userRequest.post('/get_donations', searchQuery)
-      .then((res) => {setDonations(res.data)
-      console.log(res.data)
+      .then((res) => {
+        setDonations(res.data)
+//console.log(res.data)
       })
   }
 
@@ -221,7 +222,7 @@ const DonationList = () => {
   const colourStyles = {
     option: (styles, { data, isDisabled, isFocused, isSelected }) => {
       // const color = chroma(data.color);
-      console.log({ data, isDisabled, isFocused, isSelected });
+//console.log({ data, isDisabled, isFocused, isSelected });
       return {
         ...styles,
         backgroundColor: isFocused ? "#999999" : null,
@@ -252,12 +253,15 @@ const DonationList = () => {
           transaction_date: dayjs(donation.transaction_date),
           client_name: donation.client_name,
           payment_method: donation.payment_method,
-          electronic_trans_type: donation.electronic_trans_type
+          electronic_trans_type: donation.electronic_trans_type,
+          received_for: donation.beneficiary,
+          client_name: donation.client_name,
+          phone: donation.phone,
         })
         )
 
 
-      console.log(donations)
+//console.log(donations)
       // const dataForExport 
       // data.map(({id, deviceName}) => ({id, deviceName})
       let trans = donations.map((element) => (
@@ -283,11 +287,11 @@ const DonationList = () => {
   }
 
   const handleDelete = (transaction) => {
- console.log(userData)
+//console.log(userData)
 
     if (confirmDelete) {
 
-      userRequest.post(`/delete_donation/${transaction.id}`,{username:userData.user.username})
+      userRequest.post(`/delete_donation/${transaction.id}`, { username: userData.user.username })
         .then((res) => {
           // console.log(res)
           // console.log('transaction deleted successfully')

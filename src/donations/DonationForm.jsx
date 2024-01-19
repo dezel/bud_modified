@@ -22,6 +22,8 @@ const DonationForm = () => {
   const [receiptNumber, setReceiptNumber] = useState('')
   const [amount, setAmount] = useState('')
   const [clientName, setClientName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [beneficiary, setBeneficiary] = useState('')
 
   const [transaction, setTransaction] = useState()
   const [openPrintForm, setOpenPrintFrom] = useState(false)
@@ -41,6 +43,8 @@ const DonationForm = () => {
       amount: parseFloat(amount),
       client_name: clientName,
       funeral: 1,
+      beneficiary: beneficiary,
+      phone:phone,
       // sub_entity: userInfo.user.person.sub_entity,
       // receipt_number: receiptNumber ? receiptNumber : '-',
       person: userInfo.user.id,
@@ -48,17 +52,19 @@ const DonationForm = () => {
       electronic_trans_type: isElectronic ? selectedTransactionOption.label : '-'
     }
 
-    console.log(JSON.stringify(postData))
+    // console.log(JSON.stringify(postData))
     userRequest.post('/add_funeral_donation', postData)
       .then((res) => {
         let freshTrans = res.data
         // console.log(freshTrans)
         setTransaction(res.data.response)
-        console.log(res.data.response)
+        // console.log(res.data.response)
         setClientName('')
         setAmount('')
         setIsElectronic(false)
         setReceiptNumber('')
+        setPhone('')
+        setBeneficiary('')
         setOpenPrintFrom(true)
       }
       )
@@ -83,7 +89,7 @@ const DonationForm = () => {
   const colourStyles = {
     option: (styles, { data, isDisabled, isFocused, isSelected }) => {
       // const color = chroma(data.color);
-      console.log({ data, isDisabled, isFocused, isSelected });
+      // console.log({ data, isDisabled, isFocused, isSelected });
       return {
         ...styles,
         // backgroundColor: isFocused ? '#FFC0CB': null,
@@ -119,6 +125,22 @@ const DonationForm = () => {
               size="small"
               required
               value={clientName}
+            />
+            <Controls.Input
+              name="phone"
+              label="Phone"
+              onChange={(e) => setPhone(e.target.value)}
+              size="small"
+              required
+              value={phone}
+            />
+            <Controls.Input
+              name="beneficiary"
+              label="Beneficiary"
+              onChange={(e) => setBeneficiary(e.target.value)}
+              size="small"
+              required
+              value={beneficiary}
             />
             {
               isElectronic ?

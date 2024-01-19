@@ -31,7 +31,7 @@ const AddFuneral = () => {
         data.append('year_born', yearBorn);
         data.append('year_died', yearDied);
         data.append('photo', photo)
-        console.log(photo)
+//console.log(photo)
         userRequest.put('/update_funeral', data)
             .then((res) => {
 
@@ -73,7 +73,7 @@ const AddFuneral = () => {
     const colourStyles = {
         option: (styles, { data, isDisabled, isFocused, isSelected }) => {
             // const color = chroma(data.color);
-            console.log({ data, isDisabled, isFocused, isSelected });
+//console.log({ data, isDisabled, isFocused, isSelected });
             return {
                 ...styles,
                 backgroundColor: isFocused ? "#999999" : null,

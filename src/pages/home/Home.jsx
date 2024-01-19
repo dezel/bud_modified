@@ -69,7 +69,7 @@ const Home = () => {
       // setAmount(sum)
       // console.log(total)
       setTotal(sum)
-      console.log(sum)
+//console.log(sum)
     }
 
     if (donations) {
@@ -80,7 +80,7 @@ const Home = () => {
       }
   
       setTotalDonation(sum)
-      console.log(sum)
+//console.log(sum)
     }
   }
 
@@ -90,7 +90,7 @@ const Home = () => {
     await userRequest.post('/get_receipts', queryData)
       .then(res => {
         setTransactions(res.data)
-        console.log(res.data)
+//console.log(res.data)
         refresh()
       })
       .then(
@@ -103,7 +103,7 @@ const Home = () => {
     await userRequest.post('/get_donations', queryData)
       .then(res => {
         setDonations(res.data)
-        console.log(res.data)
+//console.log(res.data)
         refresh()
       })
   }
